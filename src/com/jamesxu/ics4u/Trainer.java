@@ -6,5 +6,4 @@ public abstract class Trainer {
     String name;
     Pokemon active;
     ArrayList<Pokemon> arsenal;
-    
 }
