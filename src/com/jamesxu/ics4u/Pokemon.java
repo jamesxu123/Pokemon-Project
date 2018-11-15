@@ -3,14 +3,25 @@ package com.jamesxu.ics4u;
 import java.util.ArrayList;
 
 public class Pokemon {
-    private int hp, hpMax, energy;
-    private String name, type, resistance, weakness;
     public static final int DEFAULT = 0, STUNNED = 1, DISABLED = 2;
+    private int hp, hpMax, energy = 50;
+    private String name, type, resistance, weakness;
     private ArrayList<Attack> availableAttacks;
     private int status = DEFAULT;
 
+    Pokemon(String init) {
+    }
+
     public int getStatus() {
         return status;
+    }
+
+    public void recharge() {
+        if (this.energy + 10 > 50) {
+            this.energy = 50;
+        } else {
+            this.energy += 50;
+        }
     }
 
     public Response attack(Pokemon p, Attack a) {
@@ -39,6 +50,8 @@ public class Pokemon {
                 p.hp -= totalDamage / 2;
             } else if (p.weakness.equals(this.type)) {
                 p.hp -= totalDamage * 2;
+            } else {
+                p.hp -= totalDamage;
             }
         } else {
             return new Response("You don't have enough energy!", false);
@@ -47,7 +60,7 @@ public class Pokemon {
         return new Response("Attack Success", true);
     }
 
-    class Attack {
+    public class Attack {
         public static final String STUN = "stun", WILDCARD = "wild card",
                 WILDSTORM = "wild storm", DISABLE = "disable", RECHARGE = "recharge";
         final String name, special;
