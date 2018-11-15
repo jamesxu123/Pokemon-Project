@@ -1,8 +1,7 @@
 package com.jamesxu.ics4u.pokemon;
 
 public class Main {
-
     public static void main(String[] args) {
-	// write your code here
+        Engine engine = new Engine();
     }
 }
