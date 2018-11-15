@@ -1,4 +1,4 @@
-package com.jamesxu.ics4u;
+package com.jamesxu.ics4u.pokemon;
 
 public class Response {
     public final String message;
