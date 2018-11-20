@@ -15,6 +15,10 @@ public abstract class Actor {
         for (Pokemon p : this.arsenal) p.recharge();
     }
 
+    public void healAll() {
+        for (Pokemon p : this.arsenal) p.heal();
+    }
+
     public void addPokemon(Pokemon p) {
         arsenal.add(p);
     }

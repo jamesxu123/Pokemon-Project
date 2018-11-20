@@ -7,7 +7,7 @@ public class Player extends Actor {
     Player(String name, ArrayList<Pokemon> arsenal) {
         super(name);
         for (Pokemon p : arsenal) {
-            addPokemon(p);
+            addPokemon(new Pokemon(p));
         }
     }
 

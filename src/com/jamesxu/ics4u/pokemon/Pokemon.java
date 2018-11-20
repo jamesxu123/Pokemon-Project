@@ -12,6 +12,17 @@ public class Pokemon {
     Pokemon(String init) {
     }
 
+    Pokemon(Pokemon p) {
+    }
+
+    public void heal(int amount) {
+        if (this.hp + amount <= this.hpMax) this.hp += amount;
+    }
+
+    public void heal() {
+        heal(10);
+    }
+
     public int getStatus() {
         return status;
     }
