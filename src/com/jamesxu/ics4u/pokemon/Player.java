@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class Player extends Actor {
 
-    Player(String name, ArrayList<Pokemon> arsenal) {
+    Player(String name, ArrayList<Pokemon> roster) {
         super(name);
-        for (Pokemon p : arsenal) {
+        for (Pokemon p : roster) {
             addPokemon(new Pokemon(p));
         }
     }
