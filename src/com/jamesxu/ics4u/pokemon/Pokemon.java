@@ -1,15 +1,30 @@
 package com.jamesxu.ics4u.pokemon;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Pokemon {
     public static final int DEFAULT = 0, STUNNED = 1, DISABLED = 2;
     private int hp, hpMax, energy = 50;
     private String name, type, resistance, weakness;
-    private ArrayList<Attack> availableAttacks;
+    private ArrayList<Attack> availableAttacks = new ArrayList<>();
     private int status = DEFAULT;
 
     Pokemon(String init) {
+        String[] lineArray = init.split(",");
+        name = lineArray[0];
+        hp = Integer.parseInt(lineArray[1]);
+        type = lineArray[2];
+        weakness = lineArray[3];
+        resistance = lineArray[4];
+        int numAttacks = Integer.parseInt(lineArray[5]);
+        for (int i = 6; i < numAttacks * 4; i += 4) {
+            String attackName = lineArray[i];
+            int energyCost = Integer.parseInt(lineArray[i + 1]);
+            int damage = Integer.parseInt(lineArray[i + 2]);
+            String special = lineArray[i + 3];
+            availableAttacks.add(new Attack(attackName, energyCost, damage, special));
+        }
     }
 
     Pokemon(Pokemon p) {
@@ -56,6 +71,8 @@ public class Pokemon {
                     p.status = DISABLED;
                 case Attack.RECHARGE:
                     this.energy += 20;
+                case Attack.NONE:
+                    totalDamage += a.damage;
             }
             if (p.resistance.equals(this.type)) {
                 p.hp -= totalDamage / 2;
@@ -71,9 +88,9 @@ public class Pokemon {
         return new Response("Attack Success", true);
     }
 
-    public class Attack {
+    protected class Attack {
         public static final String STUN = "stun", WILDCARD = "wild card",
-                WILDSTORM = "wild storm", DISABLE = "disable", RECHARGE = "recharge";
+                WILDSTORM = "wild storm", DISABLE = "disable", RECHARGE = "recharge", NONE = " ";
         final String name, special;
         final int energyCost, damage;
 
@@ -82,6 +99,17 @@ public class Pokemon {
             this.energyCost = energyCost;
             this.damage = damage;
             this.special = special;
+        }
+
+        @Override
+        public String toString() {
+            final StringBuilder sb = new StringBuilder("Attack{");
+            sb.append("name='").append(name).append('\'');
+            sb.append(", special='").append(special).append('\'');
+            sb.append(", energyCost=").append(energyCost);
+            sb.append(", damage=").append(damage);
+            sb.append('}');
+            return sb.toString();
         }
     }
 }
