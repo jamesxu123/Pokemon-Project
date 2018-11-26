@@ -23,11 +23,11 @@ public abstract class Actor {
         roster.add(p);
     }
 
-    public abstract Response attack();
+    public abstract Utilities.Response attack();
 
-    public abstract Response retreat();
+    public abstract Utilities.Response retreat();
 
-    public abstract Response pass();
+    public abstract Utilities.Response pass();
 
-    public abstract Response choosePokemon();
+    public abstract Utilities.Response choosePokemon();
 }

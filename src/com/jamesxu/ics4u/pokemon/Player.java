@@ -12,22 +12,22 @@ public class Player extends Actor {
     }
 
     @Override
-    public Response attack() {
+    public Utilities.Response attack() {
         return null;
     }
 
     @Override
-    public Response retreat() {
+    public Utilities.Response retreat() {
         return null;
     }
 
     @Override
-    public Response pass() {
+    public Utilities.Response pass() {
         return null;
     }
 
     @Override
-    public Response choosePokemon() {
+    public Utilities.Response choosePokemon() {
         return null;
     }
 }

@@ -8,7 +8,8 @@ import java.util.Scanner;
 
 public class Engine {
     ArrayList<Pokemon> roster = new ArrayList<>();
-    public Response loadPokemon() {
+
+    public Utilities.Response loadPokemon() {
         try {
             Scanner file = new Scanner(new BufferedReader(new FileReader("pokemon.txt")));
             int num = Integer.parseInt(file.nextLine());
@@ -18,8 +19,8 @@ public class Engine {
 
             }
         } catch (IOException e) {
-            return new Response("Error: " + e, false);
+            return new Utilities.Response("Error: " + e, false);
         }
-        return new Response("Pokemon Loaded Successfully", true);
+        return new Utilities.Response("Pokemon Loaded Successfully", true);
     }
 }

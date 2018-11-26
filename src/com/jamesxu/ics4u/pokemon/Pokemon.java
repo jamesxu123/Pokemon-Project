@@ -1,19 +1,19 @@
 package com.jamesxu.ics4u.pokemon;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Pokemon {
     public static final int DEFAULT = 0, STUNNED = 1, DISABLED = 2;
+    public ArrayList<Attack> availableAttacks = new ArrayList<>();
     private int hp, hpMax, energy = 50;
     private String name, type, resistance, weakness;
-    private ArrayList<Attack> availableAttacks = new ArrayList<>();
     private int status = DEFAULT;
 
     Pokemon(String init) {
         String[] lineArray = init.split(",");
         name = lineArray[0];
         hp = Integer.parseInt(lineArray[1]);
+        hpMax = hp;
         type = lineArray[2];
         weakness = lineArray[3];
         resistance = lineArray[4];
@@ -28,6 +28,26 @@ public class Pokemon {
     }
 
     Pokemon(Pokemon p) {
+    }
+
+    public int getHp() {
+        return hp;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Pokemon{");
+        sb.append("hp=").append(hp);
+        sb.append(", hpMax=").append(hpMax);
+        sb.append(", energy=").append(energy);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", type='").append(type).append('\'');
+        sb.append(", resistance='").append(resistance).append('\'');
+        sb.append(", weakness='").append(weakness).append('\'');
+        sb.append(", availableAttacks=").append(availableAttacks);
+        sb.append(", status=").append(status);
+        sb.append('}');
+        return sb.toString();
     }
 
     public void heal(int amount) {
@@ -50,9 +70,14 @@ public class Pokemon {
         }
     }
 
-    public Response attack(Pokemon p, Attack a) {
+    public int getEnergy() {
+        return energy;
+    }
+
+    public Utilities.Response attack(Pokemon p, Attack a) {
         int totalDamage = 0;
-        if (a.energyCost >= this.energy) {
+        if (a.energyCost <= this.energy) {
+            this.energy -= a.energyCost;
             switch (a.special) {
                 case Attack.STUN:
                     totalDamage = a.damage;
@@ -81,16 +106,18 @@ public class Pokemon {
             } else {
                 p.hp -= totalDamage;
             }
+            p.hp = p.hp < 0 ? 0 : p.hp;
         } else {
-            return new Response("You don't have enough energy!", false);
+            return new Utilities.Response(Attack.NOT_ENOUGH_ENERGY, false);
         }
 
-        return new Response("Attack Success", true);
+        return new Utilities.Response(Attack.SUCCESS, true);
     }
 
     protected class Attack {
         public static final String STUN = "stun", WILDCARD = "wild card",
                 WILDSTORM = "wild storm", DISABLE = "disable", RECHARGE = "recharge", NONE = " ";
+        public static final String NOT_ENOUGH_ENERGY = "NOT_ENOUGH_ENERGY", SUCCESS = "SUCCESS";
         final String name, special;
         final int energyCost, damage;
 
