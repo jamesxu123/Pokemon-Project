@@ -11,6 +11,12 @@ public abstract class Actor {
         this.name = name;
     }
 
+    public Pokemon getActive() {
+        return active;
+    }
+
+    public abstract Utilities.Response decision();
+
     public void recoverAll() {
         for (Pokemon p : this.roster) p.recharge();
     }

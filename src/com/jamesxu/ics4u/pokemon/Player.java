@@ -12,6 +12,11 @@ public class Player extends Actor {
     }
 
     @Override
+    public Utilities.Response decision() {
+        return null;
+    }
+
+    @Override
     public Utilities.Response attack() {
         return null;
     }
