@@ -14,7 +14,7 @@ public class Bot extends Actor {
 
     @Override
     public Utilities.Response decision() {
-        String message = "";
+        String message;
         boolean status = false;
         Pokemon active = getActive();
         for (Pokemon.Attack a : active.availableAttacks) {
