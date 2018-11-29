@@ -17,11 +17,10 @@ public class Player extends Actor {
     }
 
     @Override
-    public Utilities.Response attack() {
+    public Utilities.Response attack(Pokemon p, Pokemon.Attack a) {
         return null;
     }
 
-    @Override
     public Utilities.Response retreat() {
         return null;
     }

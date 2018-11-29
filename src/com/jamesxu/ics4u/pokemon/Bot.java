@@ -16,7 +16,7 @@ public class Bot extends Actor {
     public Utilities.Response decision() {
         String message;
         boolean status = false;
-        Pokemon active = getActive();
+        Pokemon active = this.active;
         for (Pokemon.Attack a : active.availableAttacks) {
             if (a.energyCost < active.getEnergy()) {
                 status = true;
@@ -28,13 +28,8 @@ public class Bot extends Actor {
     }
 
     @Override
-    public Utilities.Response attack() {
-        return null;
-    }
-
-    @Override
-    public Utilities.Response retreat() {
-        return null;
+    public Utilities.Response attack(Pokemon p, Pokemon.Attack a) {
+        return this.active.attack(p, a);
     }
 
     @Override
@@ -44,6 +39,9 @@ public class Bot extends Actor {
 
     @Override
     public Utilities.Response choosePokemon() {
+        int index = Utilities.randint(0, this.roster.size());
+        Pokemon chosen = this.roster.get(index);
+        this.active = chosen;
         return null;
     }
 }

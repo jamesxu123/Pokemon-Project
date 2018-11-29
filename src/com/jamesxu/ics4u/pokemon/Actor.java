@@ -4,15 +4,11 @@ import java.util.ArrayList;
 
 public abstract class Actor {
     public final String name;
-    private Pokemon active;
-    private ArrayList<Pokemon> roster;
+    protected Pokemon active;
+    protected ArrayList<Pokemon> roster;
 
     Actor(String name) {
         this.name = name;
-    }
-
-    public Pokemon getActive() {
-        return active;
     }
 
     public abstract Utilities.Response decision();
@@ -29,9 +25,7 @@ public abstract class Actor {
         roster.add(p);
     }
 
-    public abstract Utilities.Response attack();
-
-    public abstract Utilities.Response retreat();
+    public abstract Utilities.Response attack(Pokemon p, Pokemon.Attack a);
 
     public abstract Utilities.Response pass();
 
