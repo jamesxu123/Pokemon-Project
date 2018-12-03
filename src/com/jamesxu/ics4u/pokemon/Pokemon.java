@@ -1,12 +1,14 @@
 package com.jamesxu.ics4u.pokemon;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Pokemon {
     public static final int DEFAULT = 0, STUNNED = 1, DISABLED = 2;
     public ArrayList<Attack> availableAttacks = new ArrayList<>();
+    public final String name;
     private int hp, hpMax, energy = 50;
-    private String name, type, resistance, weakness;
+    private String type, resistance, weakness;
     private int status = DEFAULT;
 
     Pokemon(String init) {
@@ -28,6 +30,13 @@ public class Pokemon {
     }
 
     Pokemon(Pokemon p) {
+        name = p.name;
+        hp = p.hpMax;
+        hpMax = p.hpMax;
+        type = p.type;
+        resistance = p.resistance;
+        weakness = p.weakness;
+        availableAttacks.addAll(p.availableAttacks);
     }
 
     public int getHp() {

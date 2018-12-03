@@ -3,6 +3,7 @@ package com.jamesxu.ics4u.pokemon;
 import java.util.ArrayList;
 
 public abstract class Actor {
+    public static final String ATTACK = "attack", PASS = "pass";
     public final String name;
     protected Pokemon active;
     protected ArrayList<Pokemon> roster;
@@ -11,7 +12,9 @@ public abstract class Actor {
         this.name = name;
     }
 
-    public abstract Utilities.Response decision();
+    public abstract Utilities.Response turnDecision();
+
+    public abstract Pokemon.Attack attackDecision();
 
     public void recoverAll() {
         for (Pokemon p : this.roster) p.recharge();
@@ -25,9 +28,11 @@ public abstract class Actor {
         roster.add(p);
     }
 
-    public abstract Utilities.Response attack(Pokemon p, Pokemon.Attack a);
+    public abstract Utilities.Response attack(Pokemon p);
 
-    public abstract Utilities.Response pass();
+    public void pass() {
+        System.out.println(String.format("%s has passed their turn!", name));
+    }
 
     public abstract Utilities.Response choosePokemon();
 }

@@ -3,7 +3,6 @@ package com.jamesxu.ics4u.pokemon;
 import java.util.ArrayList;
 
 public class Bot extends Actor {
-    public static final String ATTACK = "attack", PASS = "pass";
 
     Bot(String name, ArrayList<Pokemon> roster) {
         super(name);
@@ -13,7 +12,17 @@ public class Bot extends Actor {
     }
 
     @Override
-    public Utilities.Response decision() {
+    public Utilities.Response attack(Pokemon p) {
+        return active.attack(p, attackDecision());
+    }
+
+    @Override
+    public Pokemon.Attack attackDecision() {
+        return active.availableAttacks.get(Utilities.randint(0, active.availableAttacks.size()));
+    }
+
+    @Override
+    public Utilities.Response turnDecision() {
         String message;
         boolean status = false;
         Pokemon active = this.active;
@@ -28,20 +37,10 @@ public class Bot extends Actor {
     }
 
     @Override
-    public Utilities.Response attack(Pokemon p, Pokemon.Attack a) {
-        return this.active.attack(p, a);
-    }
-
-    @Override
-    public Utilities.Response pass() {
-        return null;
-    }
-
-    @Override
     public Utilities.Response choosePokemon() {
         int index = Utilities.randint(0, this.roster.size());
         Pokemon chosen = this.roster.get(index);
         this.active = chosen;
-        return null;
+        return new Utilities.Response(chosen.name, true);
     }
 }

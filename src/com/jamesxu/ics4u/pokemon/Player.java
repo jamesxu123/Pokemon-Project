@@ -12,12 +12,12 @@ public class Player extends Actor {
     }
 
     @Override
-    public Utilities.Response decision() {
+    public Utilities.Response turnDecision() {
         return null;
     }
 
     @Override
-    public Utilities.Response attack(Pokemon p, Pokemon.Attack a) {
+    public Utilities.Response attack(Pokemon p) {
         return null;
     }
 
@@ -26,7 +26,7 @@ public class Player extends Actor {
     }
 
     @Override
-    public Utilities.Response pass() {
+    public Pokemon.Attack attackDecision() {
         return null;
     }
 
