@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class PokemonArena {
-    static ArrayList<Pokemon> roster = new ArrayList<>();
+    static final ArrayList<Pokemon> roster = new ArrayList<>();
 
     public static Utilities.Response loadPokemon() {
         try {

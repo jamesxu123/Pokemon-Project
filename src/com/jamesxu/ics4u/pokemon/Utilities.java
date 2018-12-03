@@ -9,10 +9,6 @@ class Utilities {
         return (int) (Math.random() * (high - low + 1) + low);
     }
 
-    static int getRange(int low, int high) {
-        return 0;
-    }
-
     public static class Response {
         public final String message;
         public final boolean status;

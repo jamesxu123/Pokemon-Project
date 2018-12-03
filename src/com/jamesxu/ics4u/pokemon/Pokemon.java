@@ -1,14 +1,17 @@
 package com.jamesxu.ics4u.pokemon;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class Pokemon {
     public static final int DEFAULT = 0, STUNNED = 1, DISABLED = 2;
-    public ArrayList<Attack> availableAttacks = new ArrayList<>();
+    public final ArrayList<Attack> availableAttacks = new ArrayList<>();
     public final String name;
-    private int hp, hpMax, energy = 50;
-    private String type, resistance, weakness;
+    private final int hpMax;
+    private final String type;
+    private final String resistance;
+    private final String weakness;
+    private int hp;
+    private int energy = 50;
     private int status = DEFAULT;
 
     Pokemon(String init) {
@@ -37,6 +40,8 @@ public class Pokemon {
         resistance = p.resistance;
         weakness = p.weakness;
         availableAttacks.addAll(p.availableAttacks);
+        energy = p.energy;
+        status = p.status;
     }
 
     public int getHp() {
@@ -45,18 +50,16 @@ public class Pokemon {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Pokemon{");
-        sb.append("hp=").append(hp);
-        sb.append(", hpMax=").append(hpMax);
-        sb.append(", energy=").append(energy);
-        sb.append(", name='").append(name).append('\'');
-        sb.append(", type='").append(type).append('\'');
-        sb.append(", resistance='").append(resistance).append('\'');
-        sb.append(", weakness='").append(weakness).append('\'');
-        sb.append(", availableAttacks=").append(availableAttacks);
-        sb.append(", status=").append(status);
-        sb.append('}');
-        return sb.toString();
+        return "Pokemon{" + "hp=" + hp +
+                ", hpMax=" + hpMax +
+                ", energy=" + energy +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", resistance='" + resistance + '\'' +
+                ", weakness='" + weakness + '\'' +
+                ", availableAttacks=" + availableAttacks +
+                ", status=" + status +
+                '}';
     }
 
     public void heal(int amount) {
@@ -139,13 +142,11 @@ public class Pokemon {
 
         @Override
         public String toString() {
-            final StringBuilder sb = new StringBuilder("Attack{");
-            sb.append("name='").append(name).append('\'');
-            sb.append(", special='").append(special).append('\'');
-            sb.append(", energyCost=").append(energyCost);
-            sb.append(", damage=").append(damage);
-            sb.append('}');
-            return sb.toString();
+            return "Attack{" + "name='" + name + '\'' +
+                    ", special='" + special + '\'' +
+                    ", energyCost=" + energyCost +
+                    ", damage=" + damage +
+                    '}';
         }
     }
 }
