@@ -3,18 +3,23 @@ package com.jamesxu.ics4u.pokemon;
 import java.util.ArrayList;
 
 public abstract class Actor {
-    public static final String ATTACK = "attack", PASS = "pass";
-    public final String name;
-    protected Pokemon active;
-    protected ArrayList<Pokemon> roster;
+    static final String ATTACK = "attack", PASS = "pass";
+    final String name;
+    Pokemon active;
+    int activeIndex;
+    ArrayList<Pokemon> roster = new ArrayList<>();
 
     Actor(String name) {
         this.name = name;
     }
 
+    public void setActive() {
+        active = roster.get(activeIndex);
+    }
+
     public abstract Utilities.Response turnDecision();
 
-    public abstract Pokemon.Attack attackDecision();
+    public abstract Pokemon.Attack chooseAttack();
 
     public void recoverAll() {
         for (Pokemon p : this.roster) p.recharge();
@@ -34,5 +39,5 @@ public abstract class Actor {
         System.out.println(String.format("%s has passed their turn!", name));
     }
 
-    public abstract Utilities.Response choosePokemon();
+    public abstract Utilities.Response chooseActive();
 }

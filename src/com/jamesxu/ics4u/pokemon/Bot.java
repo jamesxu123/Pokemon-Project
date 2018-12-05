@@ -13,12 +13,14 @@ public class Bot extends Actor {
 
     @Override
     public Utilities.Response attack(Pokemon p) {
-        return active.attack(p, attackDecision());
+        return active.attack(p, chooseAttack());
     }
 
     @Override
-    public Pokemon.Attack attackDecision() {
-        return active.availableAttacks.get(Utilities.randint(0, active.availableAttacks.size()));
+    public Pokemon.Attack chooseAttack() {
+        Pokemon.Attack a = active.availableAttacks.get(Utilities.randInt(0, active.availableAttacks.size()));
+        System.out.println(String.format("%s (%s) has chosen %s", active.name, this.name, a.name));
+        return a;
     }
 
     @Override
@@ -37,10 +39,9 @@ public class Bot extends Actor {
     }
 
     @Override
-    public Utilities.Response choosePokemon() {
-        int index = Utilities.randint(0, this.roster.size());
-        Pokemon chosen = this.roster.get(index);
-        this.active = chosen;
-        return new Utilities.Response(chosen.name, true);
+    public Utilities.Response chooseActive() {
+        activeIndex = Utilities.randInt(0, this.roster.size());
+        setActive();
+        return new Utilities.Response(active.name, true);
     }
 }
