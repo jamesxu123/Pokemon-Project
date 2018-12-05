@@ -1,5 +1,6 @@
 package com.jamesxu.ics4u.pokemon;
 
+import java.io.*;
 import java.util.Scanner;
 
 class Utilities {
@@ -33,6 +34,13 @@ class Utilities {
             }
         }
         return result;
+    }
+
+    static void displayFile(String fileName) throws IOException {
+        BufferedReader file = new BufferedReader(new FileReader(fileName));
+        while (file.ready()) {
+            System.out.println(file.readLine());
+        }
     }
 
     public static class Response {

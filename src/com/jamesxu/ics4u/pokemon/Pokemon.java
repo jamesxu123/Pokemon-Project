@@ -12,6 +12,29 @@ public class Pokemon {
     private final String weakness;
     private int hp;
     private int energy = 50;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Pokemon)) return false;
+
+        Pokemon pokemon = (Pokemon) o;
+
+        if (hpMax != pokemon.hpMax) return false;
+        if (!name.equals(pokemon.name)) return false;
+        if (!resistance.equals(pokemon.resistance)) return false;
+        return weakness.equals(pokemon.weakness);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + hpMax;
+        result = 31 * result + resistance.hashCode();
+        result = 31 * result + weakness.hashCode();
+        return result;
+    }
+
     private int status = DEFAULT;
 
     Pokemon(String init) {

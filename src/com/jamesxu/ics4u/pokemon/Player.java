@@ -1,15 +1,11 @@
 package com.jamesxu.ics4u.pokemon;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Player extends Actor {
 
-    Player(String name, ArrayList<Pokemon> roster) {
+    Player(String name) {
         super(name);
-        for (Pokemon p : roster) {
-            addPokemon(new Pokemon(p));
-        }
     }
 
     @Override
@@ -20,7 +16,7 @@ public class Player extends Actor {
     @Override
     public Utilities.Response attack(Pokemon p) {
         active.attack(p, chooseAttack());
-        return null;
+        return new Utilities.Response(Pokemon.Attack.SUCCESS, true);
     }
 
     public Utilities.Response retreat() {
@@ -28,11 +24,32 @@ public class Player extends Actor {
     }
 
     @Override
+    public void chooseRoster() {
+        ArrayList<Pokemon> roster = new ArrayList<>();
+        System.out.println("Choose four Pokemon:");
+        for (int i = 0; i < PokemonArena.roster.size(); i++) {
+            System.out.println(String.format("%d. %s", i + 1, PokemonArena.roster.get(i).name));
+        }
+        System.out.println("Enter numbers: ");
+        for (int i = 0; i < 4; i++) {
+            int choice = Utilities.getInputFromRange(0, PokemonArena.roster.size()) - 1;
+            Pokemon c = PokemonArena.roster.get(choice);
+            while (roster.contains(c)) {
+                choice = Utilities.getInputFromRange(0, PokemonArena.roster.size()) - 1;
+                c = PokemonArena.roster.get(choice);
+            }
+            roster.add(new Pokemon(c));
+        }
+        this.roster.addAll(roster);
+    }
+
+    @Override
     public Pokemon.Attack chooseAttack() {
         System.out.println("Choose an attack: ");
         for (int i = 0; i < active.availableAttacks.size(); i++) {
             Pokemon.Attack a = active.availableAttacks.get(i);
-            System.out.println(String.format("%d. %s: %d damage, %d cost, %s special", a.name, a.damage, a.energyCost, a.special));
+            System.out.println(String.format("%d. %s: %d damage, %d cost, %s special", i + 1, a.name,
+                    a.damage, a.energyCost, (a.special.equals(Pokemon.Attack.NONE)) ? "No" : a.special));
         }
         System.out.print("Enter a number: ");
         int index = Utilities.getInputFromRange(1, active.availableAttacks.size() + 1) - 1;

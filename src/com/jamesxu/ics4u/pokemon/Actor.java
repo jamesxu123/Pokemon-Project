@@ -17,9 +17,26 @@ public abstract class Actor {
         active = roster.get(activeIndex);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Actor)) return false;
+
+        Actor actor = (Actor) o;
+
+        return name.equals(actor.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
+
     public abstract Utilities.Response turnDecision();
 
     public abstract Pokemon.Attack chooseAttack();
+
+    public abstract void chooseRoster();
 
     public void recoverAll() {
         for (Pokemon p : this.roster) p.recharge();

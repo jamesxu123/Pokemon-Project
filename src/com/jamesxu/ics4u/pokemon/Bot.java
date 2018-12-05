@@ -4,11 +4,14 @@ import java.util.ArrayList;
 
 public class Bot extends Actor {
 
-    Bot(String name, ArrayList<Pokemon> roster) {
+    Bot(String name, Pokemon active) {
         super(name);
-        for (Pokemon p : roster) {
-            addPokemon(new Pokemon(p));
-        }
+        this.active = active;
+    }
+
+    @Override
+    public void chooseRoster() {
+
     }
 
     @Override

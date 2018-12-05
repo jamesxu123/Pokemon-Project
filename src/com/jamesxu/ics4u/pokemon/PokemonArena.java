@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class PokemonArena {
     static final ArrayList<Pokemon> roster = new ArrayList<>();
 
-    public static Utilities.Response loadPokemon() {
+    static void loadPokemon() {
         try {
             BufferedReader file = new BufferedReader(new FileReader("pokemon.txt"));
             int num = Integer.parseInt(file.readLine());
@@ -18,8 +18,17 @@ public class PokemonArena {
 
             }
         } catch (IOException e) {
-            return new Utilities.Response("Error: " + e, false);
+            System.out.println("Error: " + e);
         }
-        return new Utilities.Response("Pokemon Loaded Successfully", true);
+    }
+
+    public static void main(String[] args) throws IOException {
+        loadPokemon();
+        Utilities.displayFile("uiText/opening.txt");
+        Player player = new Player("Player");
+        player.chooseRoster();
+        Bot bot = new Bot("Bot", roster.get(Utilities.getInputFromRange(0, roster.size())));
+        System.out.println(player.roster.size());
+
     }
 }
