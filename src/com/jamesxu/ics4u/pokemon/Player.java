@@ -1,7 +1,8 @@
 package com.jamesxu.ics4u.pokemon;
 
+import java.io.InputStreamReader;
 import java.util.ArrayList;
-
+import java.io.*;
 public class Player extends Actor {
 
     Player(String name) {
@@ -31,10 +32,12 @@ public class Player extends Actor {
             System.out.println(String.format("%d. %s", i + 1, PokemonArena.roster.get(i).name));
         }
         System.out.println("Enter numbers: ");
+
         for (int i = 0; i < 4; i++) {
             int choice = Utilities.getInputFromRange(0, PokemonArena.roster.size()) - 1;
             Pokemon c = PokemonArena.roster.get(choice);
             while (roster.contains(c)) {
+                System.out.println("Already chosen");
                 choice = Utilities.getInputFromRange(0, PokemonArena.roster.size()) - 1;
                 c = PokemonArena.roster.get(choice);
             }

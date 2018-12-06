@@ -27,8 +27,7 @@ public class PokemonArena {
         Utilities.displayFile("uiText/opening.txt");
         Player player = new Player("Player");
         player.chooseRoster();
-        Bot bot = new Bot("Bot", roster.get(Utilities.getInputFromRange(0, roster.size())));
-        System.out.println(player.roster.size());
+        Bot bot = new Bot("Bot", roster.get(Utilities.randInt(0, roster.size())));
 
     }
 }
