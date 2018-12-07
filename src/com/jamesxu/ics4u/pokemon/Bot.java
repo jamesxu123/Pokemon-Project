@@ -4,14 +4,16 @@ import java.util.ArrayList;
 
 public class Bot extends Actor {
 
+    private Pokemon active;
+
     Bot(String name, Pokemon active) {
         super(name);
         this.active = active;
     }
 
     @Override
-    public void chooseRoster() {
-
+    public ArrayList<Pokemon> chooseRoster() {
+        return null;
     }
 
     @Override
@@ -43,8 +45,8 @@ public class Bot extends Actor {
 
     @Override
     public Utilities.Response chooseActive() {
-        activeIndex = Utilities.randInt(0, this.roster.size());
-        setActive();
+        int activeIndex = Utilities.randInt(0, this.roster.size());
+        active = roster.get(activeIndex);
         return new Utilities.Response(active.name, true);
     }
 }

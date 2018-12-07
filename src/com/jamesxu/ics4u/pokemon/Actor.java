@@ -1,21 +1,15 @@
 package com.jamesxu.ics4u.pokemon;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-public abstract class Actor {
-    static final String ATTACK = "attack", PASS = "pass";
+abstract class Actor {
+    static final String ATTACK = "attack", PASS = "pass", RETREAT = "retreat";
     final String name;
-    Pokemon active;
-    int activeIndex;
-    ArrayList<Pokemon> roster = new ArrayList<>();
+
+    final ArrayList<Pokemon> roster = new ArrayList<>();
 
     Actor(String name) {
         this.name = name;
-    }
-
-    public void setActive() {
-        active = roster.get(activeIndex);
     }
 
     @Override
@@ -37,7 +31,7 @@ public abstract class Actor {
 
     public abstract Pokemon.Attack chooseAttack();
 
-    public abstract void chooseRoster();
+    public abstract ArrayList<Pokemon> chooseRoster();
 
     public void recoverAll() {
         for (Pokemon p : this.roster) p.recharge();

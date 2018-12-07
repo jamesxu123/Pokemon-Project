@@ -1,9 +1,10 @@
 package com.jamesxu.ics4u.pokemon;
 
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.io.*;
+
 public class Player extends Actor {
+
+    private Pokemon active;
 
     Player(String name) {
         super(name);
@@ -11,6 +12,11 @@ public class Player extends Actor {
 
     @Override
     public Utilities.Response turnDecision() {
+        System.out.println("Choose from the following: ");
+        System.out.println("1. ATTACK");
+        System.out.println("2. PASS");
+        System.out.println("3. RETREAT");
+
         return null;
     }
 
@@ -25,7 +31,7 @@ public class Player extends Actor {
     }
 
     @Override
-    public void chooseRoster() {
+    public ArrayList<Pokemon> chooseRoster() {
         ArrayList<Pokemon> roster = new ArrayList<>();
         System.out.println("Choose four Pokemon:");
         for (int i = 0; i < PokemonArena.roster.size(); i++) {
@@ -44,6 +50,8 @@ public class Player extends Actor {
             roster.add(new Pokemon(c));
         }
         this.roster.addAll(roster);
+
+        return this.roster;
     }
 
     @Override
@@ -66,25 +74,8 @@ public class Player extends Actor {
             System.out.println(String.format("%d. %s", i + 1, roster.get(i).name));
         }
         System.out.print("Enter a number: ");
-//        int choice;
-//        boolean done = false;
-//        Scanner input = new Scanner(System.in);
-//        while (!done) {
-//            try {
-//                choice = Integer.parseInt(input.nextLine());
-//                if (Utilities.withinRange(choice - 1, 0, roster.size())) {
-//                    activeIndex = choice - 1;
-//                    setActive();
-//                    done = true;
-//                    System.out.println(String.format("%s, I CHOOSE YOU!", active.name));
-//                }
-//            } catch (Exception e) {
-//                System.out.println("Not a number");
-//            }
-//
-//        }
-        activeIndex = Utilities.getInputFromRange(1, roster.size() + 1) - 1;
-        setActive();
+        int activeIndex = Utilities.getInputFromRange(1, roster.size() + 1) - 1;
+        active = roster.get(activeIndex);
         System.out.println(String.format("%s, I CHOOSE YOU!", active.name));
         return null;
     }

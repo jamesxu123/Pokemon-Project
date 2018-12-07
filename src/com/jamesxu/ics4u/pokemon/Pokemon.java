@@ -3,7 +3,7 @@ package com.jamesxu.ics4u.pokemon;
 import java.util.ArrayList;
 
 public class Pokemon {
-    public static final int DEFAULT = 0, STUNNED = 1, DISABLED = 2;
+    public static final String DEFAULT = "", STUNNED = "STUNNED", DISABLED = "DISABLED", DEAD = "DEAD";
     public final ArrayList<Attack> availableAttacks = new ArrayList<>();
     public final String name;
     private final int hpMax;
@@ -12,30 +12,7 @@ public class Pokemon {
     private final String weakness;
     private int hp;
     private int energy = 50;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Pokemon)) return false;
-
-        Pokemon pokemon = (Pokemon) o;
-
-        if (hpMax != pokemon.hpMax) return false;
-        if (!name.equals(pokemon.name)) return false;
-        if (!resistance.equals(pokemon.resistance)) return false;
-        return weakness.equals(pokemon.weakness);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = name.hashCode();
-        result = 31 * result + hpMax;
-        result = 31 * result + resistance.hashCode();
-        result = 31 * result + weakness.hashCode();
-        return result;
-    }
-
-    private int status = DEFAULT;
+    private String status = DEFAULT;
 
     Pokemon(String init) {
         String[] lineArray = init.split(",");
@@ -67,6 +44,28 @@ public class Pokemon {
         status = p.status;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Pokemon)) return false;
+
+        Pokemon pokemon = (Pokemon) o;
+
+        if (hpMax != pokemon.hpMax) return false;
+        if (!name.equals(pokemon.name)) return false;
+        if (!resistance.equals(pokemon.resistance)) return false;
+        return weakness.equals(pokemon.weakness);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + hpMax;
+        result = 31 * result + resistance.hashCode();
+        result = 31 * result + weakness.hashCode();
+        return result;
+    }
+
     public int getHp() {
         return hp;
     }
@@ -85,6 +84,12 @@ public class Pokemon {
                 '}';
     }
 
+    public void perTurn() {
+        if (status.equals(STUNNED)) status = DEFAULT;
+        heal();
+        recharge();
+    }
+
     public void heal(int amount) {
         if (this.hp + amount <= this.hpMax) this.hp += amount;
     }
@@ -93,7 +98,7 @@ public class Pokemon {
         heal(10);
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
@@ -110,6 +115,7 @@ public class Pokemon {
     }
 
     public Utilities.Response attack(Pokemon p, Attack a) {
+        int damage = status.equals(Pokemon.DISABLED) ? a.damage - 10 : a.damage;
         int totalDamage = 0;
         if (a.energyCost <= this.energy) {
             this.energy -= a.energyCost;
@@ -121,18 +127,18 @@ public class Pokemon {
                     }
                 case Attack.WILDCARD:
                     if (Utilities.coinFlip()) {
-                        totalDamage = a.damage;
+                        totalDamage = damage;
                     }
                 case Attack.WILDSTORM:
                     while (Utilities.coinFlip()) {
-                        totalDamage += a.damage;
+                        totalDamage += damage;
                     }
                 case Attack.DISABLE:
                     p.status = DISABLED;
                 case Attack.RECHARGE:
                     this.energy += 20;
                 case Attack.NONE:
-                    totalDamage += a.damage;
+                    totalDamage += damage;
             }
             if (p.resistance.equals(this.type)) {
                 p.hp -= totalDamage / 2;
@@ -141,7 +147,11 @@ public class Pokemon {
             } else {
                 p.hp -= totalDamage;
             }
-            p.hp = p.hp < 0 ? 0 : p.hp;
+            if (p.hp <= 0) {
+                p.hp = 0;
+                p.status = DEAD;
+                return new Utilities.Response(Attack.KILLED, true);
+            }
         } else {
             return new Utilities.Response(Attack.NOT_ENOUGH_ENERGY, false);
         }
@@ -152,7 +162,7 @@ public class Pokemon {
     protected class Attack {
         public static final String STUN = "stun", WILDCARD = "wild card",
                 WILDSTORM = "wild storm", DISABLE = "disable", RECHARGE = "recharge", NONE = " ";
-        public static final String NOT_ENOUGH_ENERGY = "NOT_ENOUGH_ENERGY", SUCCESS = "SUCCESS";
+        public static final String NOT_ENOUGH_ENERGY = "NOT_ENOUGH_ENERGY", SUCCESS = "SUCCESS", KILLED = "KILLED";
         final String name, special;
         final int energyCost, damage;
 
