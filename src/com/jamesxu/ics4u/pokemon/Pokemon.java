@@ -14,7 +14,7 @@ public class Pokemon {
     private int energy = 50;
     private String status = DEFAULT;
 
-    Pokemon(String init) {
+    public Pokemon(String init) {
         String[] lineArray = init.split(",");
         name = lineArray[0];
         hp = Integer.parseInt(lineArray[1]);
@@ -32,7 +32,7 @@ public class Pokemon {
         }
     }
 
-    Pokemon(Pokemon p) {
+    public Pokemon(Pokemon p) {
         name = p.name;
         hp = p.hpMax;
         hpMax = p.hpMax;
@@ -159,7 +159,7 @@ public class Pokemon {
         return new Utilities.Response(Attack.SUCCESS, true);
     }
 
-    protected class Attack {
+    public class Attack {
         public static final String STUN = "stun", WILDCARD = "wild card",
                 WILDSTORM = "wild storm", DISABLE = "disable", RECHARGE = "recharge", NONE = " ";
         public static final String NOT_ENOUGH_ENERGY = "NOT_ENOUGH_ENERGY", SUCCESS = "SUCCESS", KILLED = "KILLED";

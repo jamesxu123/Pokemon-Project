@@ -1,12 +1,13 @@
 package com.jamesxu.ics4u.pokemon;
 
+import com.jamesxu.ics4u.pokemon.arena.PokemonArena;
+
 import java.util.ArrayList;
 
 public class Player extends Actor {
 
-    private Pokemon active;
 
-    Player(String name) {
+    public Player(String name) {
         super(name);
     }
 
@@ -18,12 +19,6 @@ public class Player extends Actor {
         System.out.println("3. RETREAT");
 
         return null;
-    }
-
-    @Override
-    public Utilities.Response attack(Pokemon p) {
-        active.attack(p, chooseAttack());
-        return new Utilities.Response(Pokemon.Attack.SUCCESS, true);
     }
 
     public Utilities.Response retreat() {
@@ -40,22 +35,22 @@ public class Player extends Actor {
         System.out.println("Enter numbers: ");
 
         for (int i = 0; i < 4; i++) {
-            int choice = Utilities.getInputFromRange(0, PokemonArena.roster.size()) - 1;
+            int choice = Utilities.getInputFromRange(1, PokemonArena.roster.size() + 1) - 1;
             Pokemon c = PokemonArena.roster.get(choice);
             while (roster.contains(c)) {
                 System.out.println("Already chosen");
-                choice = Utilities.getInputFromRange(0, PokemonArena.roster.size()) - 1;
+                choice = Utilities.getInputFromRange(1, PokemonArena.roster.size() + 1) - 1;
                 c = PokemonArena.roster.get(choice);
             }
             roster.add(new Pokemon(c));
         }
         this.roster.addAll(roster);
 
-        return this.roster;
+        return roster;
     }
 
     @Override
-    public Pokemon.Attack chooseAttack() {
+    protected Pokemon.Attack chooseAttack() {
         System.out.println("Choose an attack: ");
         for (int i = 0; i < active.availableAttacks.size(); i++) {
             Pokemon.Attack a = active.availableAttacks.get(i);
@@ -64,6 +59,11 @@ public class Player extends Actor {
         }
         System.out.print("Enter a number: ");
         int index = Utilities.getInputFromRange(1, active.availableAttacks.size() + 1) - 1;
+        Pokemon.Attack chosen = active.availableAttacks.get(index);
+        while (chosen.energyCost > active.getEnergy()) {
+            System.out.println("Attack costs too much");
+            index = Utilities.getInputFromRange(1, active.availableAttacks.size() + 1) - 1;
+        }
         return active.availableAttacks.get(index);
     }
 

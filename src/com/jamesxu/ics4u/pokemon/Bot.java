@@ -4,9 +4,7 @@ import java.util.ArrayList;
 
 public class Bot extends Actor {
 
-    private Pokemon active;
-
-    Bot(String name, Pokemon active) {
+    public Bot(String name, Pokemon active) {
         super(name);
         this.active = active;
     }
@@ -17,13 +15,11 @@ public class Bot extends Actor {
     }
 
     @Override
-    public Utilities.Response attack(Pokemon p) {
-        return active.attack(p, chooseAttack());
-    }
-
-    @Override
     public Pokemon.Attack chooseAttack() {
         Pokemon.Attack a = active.availableAttacks.get(Utilities.randInt(0, active.availableAttacks.size()));
+        while (a.energyCost > active.getEnergy()) {
+            a = active.availableAttacks.get(Utilities.randInt(0, active.availableAttacks.size()));
+        }
         System.out.println(String.format("%s (%s) has chosen %s", active.name, this.name, a.name));
         return a;
     }

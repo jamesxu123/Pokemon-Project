@@ -2,14 +2,24 @@ package com.jamesxu.ics4u.pokemon;
 
 import java.util.ArrayList;
 
-abstract class Actor {
-    static final String ATTACK = "attack", PASS = "pass", RETREAT = "retreat";
+public abstract class Actor {
+    public static final String ATTACK = "attack", PASS = "pass", RETREAT = "retreat";
     final String name;
 
     final ArrayList<Pokemon> roster = new ArrayList<>();
+    protected Pokemon active;
 
     Actor(String name) {
         this.name = name;
+    }
+
+    public Pokemon getActiveCopy() {
+        return new Pokemon(active);
+    }
+
+    public void deathRitual(Pokemon pokemon) {
+        roster.remove(pokemon);
+        chooseActive();
     }
 
     @Override
@@ -29,7 +39,7 @@ abstract class Actor {
 
     public abstract Utilities.Response turnDecision();
 
-    public abstract Pokemon.Attack chooseAttack();
+    protected abstract Pokemon.Attack chooseAttack();
 
     public abstract ArrayList<Pokemon> chooseRoster();
 
@@ -45,7 +55,9 @@ abstract class Actor {
         roster.add(p);
     }
 
-    public abstract Utilities.Response attack(Pokemon p);
+    public Utilities.Response attack(Actor actor) {
+        return active.attack(actor.active, chooseAttack());
+    }
 
     public void pass() {
         System.out.println(String.format("%s has passed their turn!", name));
