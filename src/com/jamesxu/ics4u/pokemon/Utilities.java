@@ -12,10 +12,6 @@ public class Utilities {
         return (int) (Math.random() * (high - low) + low);
     }
 
-    public static boolean withinRange(int num, int low, int high) {
-        return num < high && num >= low;
-    }
-
     public static int getInputFromRange(int low, int high) {
         boolean done = false;
         int result = 0;
