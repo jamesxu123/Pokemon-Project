@@ -45,9 +45,6 @@ public class PokemonArena {
             if (player.getRosterSize() == 0) {
                 System.out.println("You've lost!");
                 running = false;
-            } else if (bot.getRosterSize() == 0) {
-                System.out.println("Trainer Supreme");
-                running = false;
             }
             Utilities.Response playerDecision = player.turnDecision();
             switch (playerDecision.message) {
@@ -82,12 +79,18 @@ public class PokemonArena {
                             System.out.println(player.getActiveCopy().name + " has been killed!");
                             player.deathRitual(player.getActiveCopy());
                             break;
+                        case Pokemon.Attack.SUCCESS:
+
                     }
                     break;
                 case Bot.PASS:
-                    System.out.println(String.format("%s has passed his turn!", bot.name));
+                    bot.pass();
                     break;
             }
+            player.recoverAll();
+            player.healAll();
+            bot.recoverAll();
+            bot.healAll();
         }
     }
 }

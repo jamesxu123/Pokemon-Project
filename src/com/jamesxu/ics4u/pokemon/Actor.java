@@ -39,6 +39,15 @@ public abstract class Actor {
         return name.equals(actor.name);
     }
 
+    public boolean canAttack() {
+        for (Pokemon.Attack attack : active.availableAttacks) {
+            if (attack.energyCost <= active.getEnergy()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public int hashCode() {
         return name.hashCode();

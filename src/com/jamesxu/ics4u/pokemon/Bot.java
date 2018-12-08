@@ -29,19 +29,23 @@ public class Bot extends Actor {
     @Override
     public Utilities.Response turnDecision() {
         String message;
-        boolean status = false;
-        for (Pokemon.Attack a : active.availableAttacks) {
-            if (a.energyCost <= active.getEnergy()) {
-                status = true;
-                break;
-            }
-        }
+        boolean status = canAttack();
         if (status) {
             message = Bot.ATTACK;
         } else {
             message = Bot.PASS;
         }
         return new Utilities.Response(message, status);
+    }
+
+    @Override
+    public void recoverAll() {
+        active.recharge();
+    }
+
+    @Override
+    public void healAll() {
+        active.heal();
     }
 
     @Override

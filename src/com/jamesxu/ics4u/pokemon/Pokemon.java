@@ -106,7 +106,7 @@ public class Pokemon {
         if (this.energy + 10 > 50) {
             this.energy = 50;
         } else {
-            this.energy += 50;
+            this.energy += 10;
         }
     }
 
@@ -164,7 +164,7 @@ public class Pokemon {
         } else {
             return new Utilities.Response(Attack.NOT_ENOUGH_ENERGY, false);
         }
-
+        System.out.println(String.format("%s has dealt %d damage to %s", this.name, totalDamage, p.name));
         return new Utilities.Response(Attack.SUCCESS, true);
     }
 

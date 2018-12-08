@@ -14,7 +14,7 @@ public class Player extends Actor {
     @Override
     public Utilities.Response turnDecision() {
         System.out.println("Choose from the following: ");
-        System.out.println("1. ATTACK");
+        if (canAttack()) System.out.println("1. ATTACK");
         System.out.println("2. PASS");
         System.out.println("3. RETREAT");
         int choice = Utilities.getInputFromRange(1, 4);
