@@ -1,5 +1,7 @@
 package com.jamesxu.ics4u.pokemon;
 
+import com.jamesxu.ics4u.pokemon.arena.PokemonArena;
+
 import java.util.ArrayList;
 
 public class Bot extends Actor {
@@ -28,21 +30,25 @@ public class Bot extends Actor {
     public Utilities.Response turnDecision() {
         String message;
         boolean status = false;
-        Pokemon active = this.active;
         for (Pokemon.Attack a : active.availableAttacks) {
-            if (a.energyCost < active.getEnergy()) {
+            if (a.energyCost <= active.getEnergy()) {
                 status = true;
                 break;
             }
         }
-        message = status ? ATTACK : PASS;
+        if (status) {
+            message = Bot.ATTACK;
+        } else {
+            message = Bot.PASS;
+        }
         return new Utilities.Response(message, status);
     }
 
     @Override
     public Utilities.Response chooseActive() {
-        int activeIndex = Utilities.randInt(0, this.roster.size());
-        active = roster.get(activeIndex);
+        int activeIndex = Utilities.randInt(0, PokemonArena.roster.size());
+        active = PokemonArena.roster.get(activeIndex);
+        PokemonArena.roster.remove(activeIndex);
         return new Utilities.Response(active.name, true);
     }
 }

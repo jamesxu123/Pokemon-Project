@@ -124,21 +124,30 @@ public class Pokemon {
                     totalDamage = a.damage;
                     if (Utilities.coinFlip()) {
                         p.status = STUNNED;
+                        System.out.println(String.format("%s has been stunned!", p.name));
                     }
+                    break;
                 case Attack.WILDCARD:
                     if (Utilities.coinFlip()) {
                         totalDamage = damage;
+                        System.out.println(Attack.WILDCARD);
                     }
+                    break;
                 case Attack.WILDSTORM:
                     while (Utilities.coinFlip()) {
                         totalDamage += damage;
+                        System.out.println(Attack.WILDSTORM);
                     }
+                    break;
                 case Attack.DISABLE:
                     p.status = DISABLED;
+                    break;
                 case Attack.RECHARGE:
                     this.energy += 20;
+                    break;
                 case Attack.NONE:
                     totalDamage += damage;
+                    break;
             }
             if (p.resistance.equals(this.type)) {
                 p.hp -= totalDamage / 2;

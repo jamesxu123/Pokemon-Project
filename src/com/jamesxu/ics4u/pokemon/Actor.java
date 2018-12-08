@@ -1,10 +1,12 @@
 package com.jamesxu.ics4u.pokemon;
 
+import com.jamesxu.ics4u.pokemon.arena.PokemonArena;
+
 import java.util.ArrayList;
 
 public abstract class Actor {
     public static final String ATTACK = "attack", PASS = "pass", RETREAT = "retreat";
-    final String name;
+    public final String name;
 
     final ArrayList<Pokemon> roster = new ArrayList<>();
     protected Pokemon active;
@@ -17,8 +19,13 @@ public abstract class Actor {
         return new Pokemon(active);
     }
 
+    public int getRosterSize() {
+        return roster.size();
+    }
+
     public void deathRitual(Pokemon pokemon) {
         roster.remove(pokemon);
+        PokemonArena.roster.remove(pokemon);
         chooseActive();
     }
 

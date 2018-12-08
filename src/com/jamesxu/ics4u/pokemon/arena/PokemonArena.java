@@ -40,22 +40,38 @@ public class PokemonArena {
 
     public static void turnLoop(Player player, Bot bot) {
         boolean running = true;
+        player.chooseActive();
         while (running) {
+            if (player.getRosterSize() == 0) {
+                System.out.println("You've lost!");
+                running = false;
+            } else if (bot.getRosterSize() == 0) {
+                System.out.println("Trainer Supreme");
+                running = false;
+            }
             Utilities.Response playerDecision = player.turnDecision();
             switch (playerDecision.message) {
                 case Player.ATTACK:
                     final Utilities.Response attack = player.attack(bot);
+                    System.out.println(bot.getActiveCopy());
                     switch (attack.message) {
                         case Pokemon.Attack.SUCCESS:
                             System.out.println("Attack Success!");
+                            break;
                         case Pokemon.Attack.NOT_ENOUGH_ENERGY:
                             System.out.println("Not enough energy!");
+                            break;
                         case Pokemon.Attack.KILLED:
-                            System.out.println("You've won!");
-                            running = false;
+                            System.out.println(String.format("%s has beaten %s's %s!", player.name, bot.name,
+                                    bot.getActiveCopy().name));
+                            bot.deathRitual(bot.getActiveCopy());
+                            bot.chooseActive();
+                            break;
                     }
+                    break;
                 case Player.RETREAT:
                     player.chooseActive();
+                    break;
             }
             Utilities.Response botDecision = bot.turnDecision();
             switch (botDecision.message) {
@@ -65,7 +81,12 @@ public class PokemonArena {
                         case Pokemon.Attack.KILLED:
                             System.out.println(player.getActiveCopy().name + " has been killed!");
                             player.deathRitual(player.getActiveCopy());
+                            break;
                     }
+                    break;
+                case Bot.PASS:
+                    System.out.println(String.format("%s has passed his turn!", bot.name));
+                    break;
             }
         }
     }

@@ -17,8 +17,21 @@ public class Player extends Actor {
         System.out.println("1. ATTACK");
         System.out.println("2. PASS");
         System.out.println("3. RETREAT");
+        int choice = Utilities.getInputFromRange(1, 4);
+        String message = "";
+        switch (choice) {
+            case 1:
+                message = Player.ATTACK;
+                return new Utilities.Response(message, true);
+            case 2:
+                message = Player.PASS;
+                return new Utilities.Response(message, true);
+            case 3:
+                message = Player.RETREAT;
+                return new Utilities.Response(message, true);
+        }
+        return new Utilities.Response(message, true);
 
-        return null;
     }
 
     public Utilities.Response retreat() {
