@@ -13,29 +13,30 @@ public class Player extends Actor {
 
     @Override
     public Utilities.Response turnDecision() {
+        if (active.getStatus().equals(Pokemon.STUNNED)) {
+            System.out.println(String.format("%s (%s) is stunned, you have to pass your turn!",
+                    active.name, name));
+            return new Utilities.Response(Player.PASS, "");
+        }
         System.out.println("Choose from the following: ");
         if (canAttack()) System.out.println("1. ATTACK");
         System.out.println("2. PASS");
         System.out.println("3. RETREAT");
         int choice = Utilities.getInputFromRange(1, 4);
-        String message = "";
+        String status = "";
         switch (choice) {
             case 1:
-                message = Player.ATTACK;
-                return new Utilities.Response(message, true);
+                status = Player.ATTACK;
+                return new Utilities.Response(status, "");
             case 2:
-                message = Player.PASS;
-                return new Utilities.Response(message, true);
+                status = Player.PASS;
+                return new Utilities.Response(status, "");
             case 3:
-                message = Player.RETREAT;
-                return new Utilities.Response(message, true);
+                status = Player.RETREAT;
+                return new Utilities.Response(status, "");
         }
-        return new Utilities.Response(message, true);
+        return new Utilities.Response(status, "");
 
-    }
-
-    public Utilities.Response retreat() {
-        return null;
     }
 
     @Override
@@ -81,15 +82,15 @@ public class Player extends Actor {
     }
 
     @Override
-    public Utilities.Response chooseActive() {
+    public void chooseActive() {
         System.out.println("Choose a Pokemon: ");
         for (int i = 0; i < roster.size(); i++) {
             System.out.println(String.format("%d. %s", i + 1, roster.get(i).name));
+            Utilities.displayPokemon(roster.get(i));
         }
         System.out.print("Enter a number: ");
         int activeIndex = Utilities.getInputFromRange(1, roster.size() + 1) - 1;
         active = roster.get(activeIndex);
         System.out.println(String.format("%s, I CHOOSE YOU!", active.name));
-        return null;
     }
 }

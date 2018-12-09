@@ -8,7 +8,7 @@ public abstract class Actor {
     public static final String ATTACK = "attack", PASS = "pass", RETREAT = "retreat";
     public final String name;
 
-    final ArrayList<Pokemon> roster = new ArrayList<>();
+    protected final ArrayList<Pokemon> roster = new ArrayList<>();
     protected Pokemon active;
 
     Actor(String name) {
@@ -23,10 +23,12 @@ public abstract class Actor {
         return roster.size();
     }
 
-    public void deathRitual(Pokemon pokemon) {
-        roster.remove(pokemon);
-        PokemonArena.roster.remove(pokemon);
-        chooseActive();
+    public void deathRitual() {
+        roster.remove(active);
+        PokemonArena.roster.remove(active);
+        if (roster.size() > 0 || (this.getClass().equals(Bot.class)) && PokemonArena.roster.size() > 0) {
+            chooseActive();
+        }
     }
 
     @Override
@@ -39,7 +41,12 @@ public abstract class Actor {
         return name.equals(actor.name);
     }
 
-    public boolean canAttack() {
+    private void unStunActive() {
+        active.unStun();
+        System.out.println(String.format("%s (%s) is no longer stunned!", active.name, name));
+    }
+
+    boolean canAttack() {
         for (Pokemon.Attack attack : active.availableAttacks) {
             if (attack.energyCost <= active.getEnergy()) {
                 return true;
@@ -67,17 +74,16 @@ public abstract class Actor {
         for (Pokemon p : this.roster) p.heal();
     }
 
-    public void addPokemon(Pokemon p) {
-        roster.add(p);
-    }
-
     public Utilities.Response attack(Actor actor) {
         return active.attack(actor.active, chooseAttack());
     }
 
     public void pass() {
+        if (this.active.getStatus().equals(Pokemon.STUNNED)) {
+            this.unStunActive();
+        }
         System.out.println(String.format("%s has passed their turn!", name));
     }
 
-    public abstract Utilities.Response chooseActive();
+    public abstract void chooseActive();
 }

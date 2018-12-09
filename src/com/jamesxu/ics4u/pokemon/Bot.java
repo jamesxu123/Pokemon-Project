@@ -35,7 +35,7 @@ public class Bot extends Actor {
         } else {
             message = Bot.PASS;
         }
-        return new Utilities.Response(message, status);
+        return new Utilities.Response(message, "");
     }
 
     @Override
@@ -49,10 +49,10 @@ public class Bot extends Actor {
     }
 
     @Override
-    public Utilities.Response chooseActive() {
+    public void chooseActive() {
         int activeIndex = Utilities.randInt(0, PokemonArena.roster.size());
         active = PokemonArena.roster.get(activeIndex);
         PokemonArena.roster.remove(activeIndex);
-        return new Utilities.Response(active.name, true);
+        System.out.println(String.format("%s (%s), I CHOOSE YOU!", active.name, name));
     }
 }

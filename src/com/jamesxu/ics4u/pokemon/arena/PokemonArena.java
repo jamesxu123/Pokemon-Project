@@ -38,59 +38,61 @@ public class PokemonArena {
         turnLoop(player, bot);
     }
 
-    public static void turnLoop(Player player, Bot bot) {
+    public static void turnLoop(Player player, Bot bot) throws IOException {
         boolean running = true;
         player.chooseActive();
         while (running) {
-            if (player.getRosterSize() == 0) {
-                System.out.println("You've lost!");
-                running = false;
-            }
             Utilities.Response playerDecision = player.turnDecision();
-            switch (playerDecision.message) {
+            switch (playerDecision.status) {
                 case Player.ATTACK:
                     final Utilities.Response attack = player.attack(bot);
-                    System.out.println(bot.getActiveCopy());
-                    switch (attack.message) {
-                        case Pokemon.Attack.SUCCESS:
-                            System.out.println("Attack Success!");
-                            break;
+                    System.out.print(attack.message);
+                    switch (attack.status) {
                         case Pokemon.Attack.NOT_ENOUGH_ENERGY:
                             System.out.println("Not enough energy!");
                             break;
                         case Pokemon.Attack.KILLED:
-                            System.out.println(String.format("%s has beaten %s's %s!", player.name, bot.name,
-                                    bot.getActiveCopy().name));
-                            bot.deathRitual(bot.getActiveCopy());
-                            bot.chooseActive();
+                            player.healAll();
+                            bot.deathRitual();
                             break;
                     }
                     break;
                 case Player.RETREAT:
                     player.chooseActive();
                     break;
+                case Player.PASS:
+                    player.pass();
+                    break;
             }
-            Utilities.Response botDecision = bot.turnDecision();
-            switch (botDecision.message) {
-                case Bot.ATTACK:
-                    final Utilities.Response attack = bot.attack(player);
-                    switch (attack.message) {
-                        case Pokemon.Attack.KILLED:
-                            System.out.println(player.getActiveCopy().name + " has been killed!");
-                            player.deathRitual(player.getActiveCopy());
-                            break;
-                        case Pokemon.Attack.SUCCESS:
+            if (roster.size() > 0) {
+                Utilities.Response botDecision = bot.turnDecision();
+                switch (botDecision.status) {
+                    case Bot.ATTACK:
+                        final Utilities.Response attack = bot.attack(player);
+                        System.out.print(attack.message);
+                        switch (attack.status) {
+                            case Pokemon.Attack.KILLED:
+                                player.deathRitual();
+                                if (player.getRosterSize() == 0) {
+                                    Utilities.displayFile("uiText/loss.txt");
+                                    running = false;
+                                    return;
+                                }
+                                break;
+                            case Pokemon.Attack.SUCCESS:
 
-                    }
-                    break;
-                case Bot.PASS:
-                    bot.pass();
-                    break;
+                        }
+                        break;
+                    case Bot.PASS:
+                        bot.pass();
+                        break;
+                }
+                player.recoverAll();
+                bot.recoverAll();
+            } else {
+                Utilities.displayFile("uiText/win.txt");
+                running = false;
             }
-            player.recoverAll();
-            player.healAll();
-            bot.recoverAll();
-            bot.healAll();
         }
     }
 }

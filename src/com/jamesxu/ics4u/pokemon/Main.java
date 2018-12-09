@@ -9,3 +9,5 @@ public class Main {
         PokemonArena.main(new String[]{});
     }
 }
+
+/* 583 lines */

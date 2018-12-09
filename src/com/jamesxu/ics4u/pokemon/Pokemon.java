@@ -3,7 +3,7 @@ package com.jamesxu.ics4u.pokemon;
 import java.util.ArrayList;
 
 public class Pokemon {
-    public static final String DEFAULT = "", STUNNED = "STUNNED", DISABLED = "DISABLED", DEAD = "DEAD";
+    public static final String DEFAULT = "NORMAL", STUNNED = "STUNNED", DEAD = "DEAD";
     public final ArrayList<Attack> availableAttacks = new ArrayList<>();
     public final String name;
     private final int hpMax;
@@ -13,6 +13,7 @@ public class Pokemon {
     private int hp;
     private int energy = 50;
     private String status = DEFAULT;
+    private boolean DISABLED = false;
 
     public Pokemon(String init) {
         String[] lineArray = init.split(",");
@@ -23,13 +24,21 @@ public class Pokemon {
         weakness = lineArray[3];
         resistance = lineArray[4];
         int numAttacks = Integer.parseInt(lineArray[5]);
-        for (int i = 6; i < numAttacks * 4; i += 4) {
+        for (int i = 6; i < 6 + numAttacks * 4; i += 4) {
             String attackName = lineArray[i];
             int energyCost = Integer.parseInt(lineArray[i + 1]);
             int damage = Integer.parseInt(lineArray[i + 2]);
             String special = lineArray[i + 3];
             availableAttacks.add(new Attack(attackName, energyCost, damage, special));
         }
+    }
+
+    public String getResistance() {
+        return resistance;
+    }
+
+    public String getWeakness() {
+        return weakness;
     }
 
     public Pokemon(Pokemon p) {
@@ -80,14 +89,12 @@ public class Pokemon {
                 ", resistance='" + resistance + '\'' +
                 ", weakness='" + weakness + '\'' +
                 ", availableAttacks=" + availableAttacks +
-                ", status=" + status +
+                ", message=" + status +
                 '}';
     }
 
-    public void perTurn() {
-        if (status.equals(STUNNED)) status = DEFAULT;
-        heal();
-        recharge();
+    public void unStun() {
+        this.status = DEFAULT;
     }
 
     public void heal(int amount) {
@@ -115,7 +122,8 @@ public class Pokemon {
     }
 
     public Utilities.Response attack(Pokemon p, Attack a) {
-        int damage = status.equals(Pokemon.DISABLED) ? a.damage - 10 : a.damage;
+        String message = String.format("-----%10s's Attack-----\n", name);
+        int damage = DISABLED ? a.damage - 10 < 0 ? 0 : a.damage - 10 : a.damage;
         int totalDamage = 0;
         if (a.energyCost <= this.energy) {
             this.energy -= a.energyCost;
@@ -124,26 +132,32 @@ public class Pokemon {
                     totalDamage = a.damage;
                     if (Utilities.coinFlip()) {
                         p.status = STUNNED;
-                        System.out.println(String.format("%s has been stunned!", p.name));
+                        message += String.format("%s has been stunned!\n", p.name);
                     }
                     break;
                 case Attack.WILDCARD:
                     if (Utilities.coinFlip()) {
                         totalDamage = damage;
-                        System.out.println(Attack.WILDCARD);
+                        message += "Wildcard suceeded!\n";
+                    } else {
+                        message += "Wildcard missed!\n";
                     }
                     break;
                 case Attack.WILDSTORM:
                     while (Utilities.coinFlip()) {
                         totalDamage += damage;
-                        System.out.println(Attack.WILDSTORM);
+                        message += "WILDSTORM!\n";
                     }
                     break;
                 case Attack.DISABLE:
-                    p.status = DISABLED;
+                    DISABLED = true;
+                    message += String.format("%s has been disabled!\n", p.name);
+                    totalDamage += a.damage;
                     break;
                 case Attack.RECHARGE:
                     this.energy += 20;
+                    message += String.format("%s has recharged itself 20 energy!\n", name);
+                    totalDamage += a.damage;
                     break;
                 case Attack.NONE:
                     totalDamage += damage;
@@ -159,13 +173,17 @@ public class Pokemon {
             if (p.hp <= 0) {
                 p.hp = 0;
                 p.status = DEAD;
-                return new Utilities.Response(Attack.KILLED, true);
+                message += String.format("%s has KILLED %s!\n", name, p.name);
+                message += "-".repeat(29) + "\n";
+                return new Utilities.Response(Attack.KILLED, message);
+
             }
+            message += String.format("%s has dealt %d damage to %s\n", this.name, totalDamage, p.name);
+            message += "-".repeat(29) + "\n";
         } else {
-            return new Utilities.Response(Attack.NOT_ENOUGH_ENERGY, false);
+            return new Utilities.Response(Attack.NOT_ENOUGH_ENERGY, message);
         }
-        System.out.println(String.format("%s has dealt %d damage to %s", this.name, totalDamage, p.name));
-        return new Utilities.Response(Attack.SUCCESS, true);
+        return new Utilities.Response(Attack.SUCCESS, message);
     }
 
     public class Attack {
