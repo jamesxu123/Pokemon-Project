@@ -38,7 +38,7 @@ public class PokemonArena {
         turnLoop(player, bot);
     }
 
-    public static void turnLoop(Player player, Bot bot) throws IOException {
+    private static void turnLoop(Player player, Bot bot) throws IOException {
         boolean running = true;
         player.chooseActive();
         while (running) {

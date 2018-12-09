@@ -51,6 +51,7 @@ public class Pokemon {
         availableAttacks.addAll(p.availableAttacks);
         energy = p.energy;
         status = p.status;
+        DISABLED = p.DISABLED;
     }
 
     @Override
@@ -174,12 +175,12 @@ public class Pokemon {
                     break;
             }
             if (p.resistance.equals(this.type)) {
-                p.hp -= totalDamage / 2;
+                totalDamage /= 2;
             } else if (p.weakness.equals(this.type)) {
-                p.hp -= totalDamage * 2;
-            } else {
-                p.hp -= totalDamage;
+                totalDamage *= 2;
             }
+            p.hp -= totalDamage;
+            message += String.format("%s has dealt %d damage to %s\n", this.name, totalDamage, p.name);
             if (p.hp <= 0) {
                 p.hp = 0;
                 p.status = DEAD;
@@ -188,7 +189,6 @@ public class Pokemon {
                 return new Utilities.Response(Attack.KILLED, message);
 
             }
-            message += String.format("%s has dealt %d damage to %s\n", this.name, totalDamage, p.name);
             message += "-".repeat(29) + "\n";
         } else {
             return new Utilities.Response(Attack.NOT_ENOUGH_ENERGY, message);
