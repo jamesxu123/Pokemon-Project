@@ -23,10 +23,7 @@ public class Bot extends Actor {
 
     @Override
     public Pokemon.Attack chooseAttack() {
-        Pokemon.Attack a = active.availableAttacks.get(Utilities.randInt(0, active.availableAttacks.size()));
-        while (a.energyCost > active.getEnergy()) {
-            a = active.availableAttacks.get(Utilities.randInt(0, active.availableAttacks.size()));
-        }
+        Pokemon.Attack a = active.validAttacks().get(Utilities.randInt(0, active.validAttacks().size()));
         System.out.println(String.format("%s (%s) has chosen %s", active.name, this.name, a.name));
         return a;
     }
