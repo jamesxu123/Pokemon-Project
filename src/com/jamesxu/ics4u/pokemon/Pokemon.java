@@ -93,6 +93,16 @@ public class Pokemon {
                 '}';
     }
 
+    public ArrayList<Attack> validAttacks() {
+        ArrayList<Attack> attacks = new ArrayList<>();
+        for (Pokemon.Attack attack : availableAttacks) {
+            if (attack.energyCost <= this.energy) {
+                attacks.add(attack);
+            }
+        }
+        return attacks;
+    }
+
     public void unStun() {
         this.status = DEFAULT;
     }

@@ -15,10 +15,6 @@ public abstract class Actor {
         this.name = name;
     }
 
-    public Pokemon getActiveCopy() {
-        return new Pokemon(active);
-    }
-
     public int getRosterSize() {
         return roster.size();
     }
@@ -26,7 +22,7 @@ public abstract class Actor {
     public void deathRitual() {
         roster.remove(active);
         PokemonArena.roster.remove(active);
-        if (roster.size() > 0 || (this.getClass().equals(Bot.class)) && PokemonArena.roster.size() > 0) {
+        if (roster.size() > 0) {
             chooseActive();
         }
     }

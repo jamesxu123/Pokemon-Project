@@ -12,6 +12,11 @@ public class Bot extends Actor {
     }
 
     @Override
+    public void deathRitual() {
+        if (PokemonArena.roster.size() > 0) chooseActive();
+    }
+
+    @Override
     public ArrayList<Pokemon> chooseRoster() {
         return null;
     }

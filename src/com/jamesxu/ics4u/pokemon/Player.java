@@ -22,7 +22,7 @@ public class Player extends Actor {
         if (canAttack()) System.out.println("1. ATTACK");
         System.out.println("2. PASS");
         System.out.println("3. RETREAT");
-        int choice = Utilities.getInputFromRange(1, 4);
+        int choice = Utilities.getInputFromRange(canAttack() ? 1 : 2, 4);
         String status = "";
         switch (choice) {
             case 1:
@@ -66,19 +66,15 @@ public class Player extends Actor {
     @Override
     protected Pokemon.Attack chooseAttack() {
         System.out.println("Choose an attack: ");
-        for (int i = 0; i < active.availableAttacks.size(); i++) {
-            Pokemon.Attack a = active.availableAttacks.get(i);
+        for (int i = 0; i < active.validAttacks().size(); i++) {
+            Pokemon.Attack a = active.validAttacks().get(i);
             System.out.println(String.format("%d. %s: %d damage, %d cost, %s special", i + 1, a.name,
                     a.damage, a.energyCost, (a.special.equals(Pokemon.Attack.NONE)) ? "No" : a.special));
         }
         System.out.print("Enter a number: ");
-        int index = Utilities.getInputFromRange(1, active.availableAttacks.size() + 1) - 1;
-        Pokemon.Attack chosen = active.availableAttacks.get(index);
-        while (chosen.energyCost > active.getEnergy()) {
-            System.out.println("Attack costs too much");
-            index = Utilities.getInputFromRange(1, active.availableAttacks.size() + 1) - 1;
-        }
-        return active.availableAttacks.get(index);
+        int index = Utilities.getInputFromRange(1, active.validAttacks().size() + 1) - 1;
+        Pokemon.Attack chosen = active.validAttacks().get(index);
+        return chosen;
     }
 
     @Override
