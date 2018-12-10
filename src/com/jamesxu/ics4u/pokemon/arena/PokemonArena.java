@@ -54,6 +54,8 @@ public class PokemonArena {
                         case Pokemon.Attack.KILLED:
                             player.healAll();
                             bot.deathRitual();
+                            player.recoverAllMax();
+                            bot.recoverAllMax();
                             break;
                     }
                     break;
@@ -78,6 +80,8 @@ public class PokemonArena {
                                     running = false;
                                     return;
                                 }
+                                player.recoverAllMax();
+                                bot.recoverAllMax();
                                 break;
                             case Pokemon.Attack.SUCCESS:
 

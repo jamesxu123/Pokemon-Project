@@ -27,6 +27,12 @@ public abstract class Actor {
         }
     }
 
+    public void recoverAllMax() {
+        for (int i = 0; i < 5; i++) {
+            recoverAll();
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
