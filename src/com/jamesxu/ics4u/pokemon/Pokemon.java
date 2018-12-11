@@ -118,7 +118,7 @@ public class Pokemon {
     }
 
     public void heal() {
-        heal(10); //Method overload heal for per-battle recovery
+        heal(20); //Method overload heal for per-battle recovery
     }
 
     public String getStatus() {
