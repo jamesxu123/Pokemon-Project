@@ -8,8 +8,8 @@ public abstract class Actor {
     public static final String ATTACK = "attack", PASS = "pass", RETREAT = "retreat";
     public final String name;
 
-    protected final ArrayList<Pokemon> roster = new ArrayList<>();
-    protected Pokemon active;
+    final ArrayList<Pokemon> roster = new ArrayList<>();
+    Pokemon active;
 
     Actor(String name) {
         this.name = name;
@@ -66,8 +66,6 @@ public abstract class Actor {
 
     protected abstract Pokemon.Attack chooseAttack();
 
-    public abstract ArrayList<Pokemon> chooseRoster();
-
     public void recoverAll() {
         for (Pokemon p : this.roster) p.recharge();
     }
@@ -87,5 +85,5 @@ public abstract class Actor {
         System.out.println(String.format("%s has passed their turn!", name));
     }
 
-    public abstract void chooseActive();
+    protected abstract void chooseActive();
 }

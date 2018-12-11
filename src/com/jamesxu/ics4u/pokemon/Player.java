@@ -13,7 +13,7 @@ public class Player extends Actor {
 
     @Override
     public Utilities.Response turnDecision() {
-        if (active.getStatus().equals(Pokemon.STUNNED)) {
+        if (active.getStatus().equals(Pokemon.STUNNED)) { //Force pass the turn if active is stunned
             System.out.println(String.format("%s (%s) is stunned, you have to pass your turn!",
                     active.name, name));
             return new Utilities.Response(Player.PASS, "");
@@ -23,6 +23,8 @@ public class Player extends Actor {
         System.out.println("2. PASS");
         System.out.println("3. RETREAT");
         int choice = Utilities.getInputFromRange(canAttack() ? 1 : 2, 4);
+        //Change start index if attack is invalid
+
         String status = "";
         switch (choice) {
             case 1:
@@ -39,26 +41,26 @@ public class Player extends Actor {
 
     }
 
-    @Override
     public ArrayList<Pokemon> chooseRoster() {
-        ArrayList<Pokemon> roster = new ArrayList<>();
+        ArrayList<Pokemon> roster = new ArrayList<>(); //Collection of the chosen Pokemon
         System.out.println("Choose four Pokemon:");
         for (int i = 0; i < PokemonArena.roster.size(); i++) {
             System.out.println(String.format("%d. %s", i + 1, PokemonArena.roster.get(i).name));
+            //Output all available Pokemon choices
         }
         System.out.println("Enter numbers: ");
 
         for (int i = 0; i < 4; i++) {
             int choice = Utilities.getInputFromRange(1, PokemonArena.roster.size() + 1) - 1;
             Pokemon c = PokemonArena.roster.get(choice);
-            while (roster.contains(c)) {
+            while (roster.contains(c)) { //Do not let user pick the same one
                 System.out.println("Already chosen");
                 choice = Utilities.getInputFromRange(1, PokemonArena.roster.size() + 1) - 1;
                 c = PokemonArena.roster.get(choice);
             }
-            roster.add(new Pokemon(c));
+            roster.add(new Pokemon(c)); //Clone Pokemon to prevent modifying original
         }
-        this.roster.addAll(roster);
+        this.roster.addAll(roster); //Add the pokemon to object field roster
 
         return roster;
     }
@@ -67,14 +69,14 @@ public class Player extends Actor {
     protected Pokemon.Attack chooseAttack() {
         System.out.println("Choose an attack: ");
         for (int i = 0; i < active.validAttacks().size(); i++) {
-            Pokemon.Attack a = active.validAttacks().get(i);
+            Pokemon.Attack a = active.validAttacks().get(i); //Retrieve attack to display information
             System.out.println(String.format("%d. %s: %d damage, %d cost, %s special", i + 1, a.name,
                     a.damage, a.energyCost, (a.special.equals(Pokemon.Attack.NONE)) ? "No" : a.special));
         }
         System.out.print("Enter a number: ");
         int index = Utilities.getInputFromRange(1, active.validAttacks().size() + 1) - 1;
-        Pokemon.Attack chosen = active.validAttacks().get(index);
-        return chosen;
+        //Shift range up by 1 to account for starting index at 1 instead of 0
+        return active.validAttacks().get(index);
     }
 
     @Override
@@ -82,10 +84,15 @@ public class Player extends Actor {
         System.out.println("Choose a Pokemon: ");
         for (int i = 0; i < roster.size(); i++) {
             System.out.println(String.format("%d. %s", i + 1, roster.get(i).name));
-            Utilities.displayPokemon(roster.get(i));
+            Utilities.displayPokemon(roster.get(i)); //Display detailed info for each Pokemon
         }
         System.out.print("Enter a number: ");
         int activeIndex = Utilities.getInputFromRange(1, roster.size() + 1) - 1;
+        while (!roster.get(activeIndex).equals(active)) {
+            //Don't let user pick the same Pokemon again
+            System.out.println("You picked your current Pokemon!");
+            activeIndex = Utilities.getInputFromRange(1, roster.size() + 1) - 1;
+        }
         active = roster.get(activeIndex);
         System.out.println(String.format("%s, I CHOOSE YOU!", active.name));
     }

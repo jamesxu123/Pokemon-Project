@@ -7,27 +7,30 @@ import java.util.Scanner;
 
 public class Utilities {
     public static boolean coinFlip() {
+        //Simulate a 50/50 chance
         return randInt(0, 10) % 2 == 0;
     }
 
     public static int randInt(int low, int high) {
+        //Returns a random integer low <= num < high
         return (int) (Math.random() * (high - low) + low);
     }
 
     public static int getInputFromRange(int low, int high) {
+        //Gets an integer from the user where low <= num < high
         boolean done = false;
         int result = 0;
         Scanner input = new Scanner(System.in);
         while (!done) {
             try {
                 int temp = Integer.parseInt(input.nextLine());
-                if (temp < high && temp >= low) {
+                if (temp < high && temp >= low) { //Check if number is within the range
                     result = temp;
                     done = true;
                 } else {
                     System.out.println("Invalid number");
                 }
-            } catch (Exception e) {
+            } catch (Exception e) { //In case user enters an incompatbile value
                 System.out.println("Invalid number");
             }
         }
@@ -35,6 +38,7 @@ public class Utilities {
     }
 
     public static void displayPokemon(Pokemon pokemon) {
+        //Displays Pokemon data in a nice format
         String output = "";
         output += String.format("--------%10s--------\n", pokemon.name);
         output += String.format("Health: %19d\n", pokemon.getHp());
@@ -53,6 +57,7 @@ public class Utilities {
     }
 
     public static void displayFile(String fileName) throws IOException {
+        //Outputs a given file
         BufferedReader file = new BufferedReader(new FileReader(fileName));
         while (file.ready()) {
             System.out.println(file.readLine());
@@ -60,6 +65,7 @@ public class Utilities {
     }
 
     public static class Response {
+        //Class used to return a standardized status and a customized message
         public final String status;
         public final String message;
 

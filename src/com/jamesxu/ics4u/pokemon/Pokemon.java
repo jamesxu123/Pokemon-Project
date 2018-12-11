@@ -24,7 +24,7 @@ public class Pokemon {
         weakness = lineArray[3];
         resistance = lineArray[4];
         int numAttacks = Integer.parseInt(lineArray[5]);
-        for (int i = 6; i < 6 + numAttacks * 4; i += 4) {
+        for (int i = 6; i < 6 + numAttacks * 4; i += 4) { //Loop through attacks and create an object for each
             String attackName = lineArray[i];
             int energyCost = Integer.parseInt(lineArray[i + 1]);
             int damage = Integer.parseInt(lineArray[i + 2]);
@@ -33,15 +33,8 @@ public class Pokemon {
         }
     }
 
-    public String getResistance() {
-        return resistance;
-    }
-
-    public String getWeakness() {
-        return weakness;
-    }
-
     public Pokemon(Pokemon p) {
+        //Clone constructor to avoid changing original
         name = p.name;
         hp = p.hpMax;
         hpMax = p.hpMax;
@@ -52,6 +45,14 @@ public class Pokemon {
         energy = p.energy;
         status = p.status;
         DISABLED = p.DISABLED;
+    }
+
+    public String getResistance() {
+        return resistance;
+    }
+
+    public String getWeakness() {
+        return weakness;
     }
 
     @Override
@@ -95,7 +96,7 @@ public class Pokemon {
     }
 
     public ArrayList<Attack> validAttacks() {
-        ArrayList<Attack> attacks = new ArrayList<>();
+        ArrayList<Attack> attacks = new ArrayList<>(); //Build a new list of attacks the Pokemon can afford
         for (Pokemon.Attack attack : availableAttacks) {
             if (attack.energyCost <= this.energy) {
                 attacks.add(attack);
@@ -109,11 +110,15 @@ public class Pokemon {
     }
 
     public void heal(int amount) {
-        if (this.hp + amount <= this.hpMax) this.hp += amount;
+        if (this.hp + amount <= this.hpMax) { //Don't allow health to go over max
+            this.hp += amount;
+        } else {
+            this.hp = this.hpMax;
+        }
     }
 
     public void heal() {
-        heal(10);
+        heal(10); //Method overload heal for per-battle recovery
     }
 
     public String getStatus() {
@@ -121,7 +126,7 @@ public class Pokemon {
     }
 
     public void recharge() {
-        if (this.energy + 10 > 50) {
+        if (this.energy + 10 > 50) { //Don't allow energy to go over max
             this.energy = 50;
         } else {
             this.energy += 10;
@@ -133,41 +138,45 @@ public class Pokemon {
     }
 
     public Utilities.Response attack(Pokemon p, Attack a) {
-        String message = String.format("-----%10s's Attack-----\n", name);
+        StringBuilder message = new StringBuilder(String.format("-----%10s's Attack-----\n", name));
+        //Final output that is displayed to the user
+
         int damage = DISABLED ? a.damage - 10 < 0 ? 0 : a.damage - 10 : a.damage;
+        //Reduce damage by 10 for disabled without going below 0
+
         int totalDamage = 0;
         if (a.energyCost <= this.energy) {
             this.energy -= a.energyCost;
-            switch (a.special) {
+            switch (a.special) { //Special attack implementation
                 case Attack.STUN:
-                    totalDamage = a.damage;
+                    totalDamage += a.damage;
                     if (Utilities.coinFlip()) {
                         p.status = STUNNED;
-                        message += String.format("%s has been stunned!\n", p.name);
+                        message.append(String.format("%s has been stunned!\n", p.name));
                     }
                     break;
                 case Attack.WILDCARD:
                     if (Utilities.coinFlip()) {
-                        totalDamage = damage;
-                        message += "Wildcard suceeded!\n";
+                        totalDamage += damage;
+                        message.append("Wildcard suceeded!\n");
                     } else {
-                        message += "Wildcard missed!\n";
+                        message.append("Wildcard missed!\n");
                     }
                     break;
                 case Attack.WILDSTORM:
                     while (Utilities.coinFlip()) {
                         totalDamage += damage;
-                        message += "WILDSTORM!\n";
+                        message.append("WILDSTORM!\n");
                     }
                     break;
                 case Attack.DISABLE:
-                    DISABLED = true;
-                    message += String.format("%s has been disabled!\n", p.name);
+                    p.DISABLED = true;
+                    message.append(String.format("%s has been disabled!\n", p.name));
                     totalDamage += a.damage;
                     break;
                 case Attack.RECHARGE:
                     this.energy += 20;
-                    message += String.format("%s has recharged itself 20 energy!\n", name);
+                    message.append(String.format("%s has recharged itself 20 energy!\n", name));
                     totalDamage += a.damage;
                     break;
                 case Attack.NONE:
@@ -175,25 +184,23 @@ public class Pokemon {
                     break;
             }
             if (p.resistance.equals(this.type)) {
-                totalDamage /= 2;
+                totalDamage /= 2; //Halve damage for resistance
             } else if (p.weakness.equals(this.type)) {
-                totalDamage *= 2;
+                totalDamage *= 2; //Double damage for weakness
             }
             p.hp -= totalDamage;
-            message += String.format("%s has dealt %d damage to %s\n", this.name, totalDamage, p.name);
+            message.append(String.format("%s has dealt %d damage to %s\n", this.name, totalDamage, p.name));
             if (p.hp <= 0) {
                 p.hp = 0;
-                p.status = DEAD;
-                message += String.format("%s has KILLED %s!\n", name, p.name);
-                message += "-".repeat(29) + "\n";
-                return new Utilities.Response(Attack.KILLED, message);
-
+                p.status = DEAD; //Mark pokemon as dead when killed
+                message.append(String.format("%s has KILLED %s!\n", name, p.name)).append("-".repeat(29)).append("\n");
+                return new Utilities.Response(Attack.KILLED, message.toString());
             }
-            message += "-".repeat(29) + "\n";
+            message.append("-".repeat(29)).append("\n");
         } else {
-            return new Utilities.Response(Attack.NOT_ENOUGH_ENERGY, message);
+            return new Utilities.Response(Attack.NOT_ENOUGH_ENERGY, message.toString());
         }
-        return new Utilities.Response(Attack.SUCCESS, message);
+        return new Utilities.Response(Attack.SUCCESS, message.toString());
     }
 
     public class Attack {
