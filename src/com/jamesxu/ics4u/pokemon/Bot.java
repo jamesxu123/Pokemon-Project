@@ -2,8 +2,6 @@ package com.jamesxu.ics4u.pokemon;
 
 import com.jamesxu.ics4u.pokemon.arena.PokemonArena;
 
-import java.util.ArrayList;
-
 public class Bot extends Actor {
 
     public Bot(String name, Pokemon active) {

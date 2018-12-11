@@ -153,6 +153,8 @@ public class Pokemon {
                     if (Utilities.coinFlip()) {
                         p.status = STUNNED;
                         message.append(String.format("%s has been stunned!\n", p.name));
+                    } else {
+                        message.append("Stun missed!\n");
                     }
                     break;
                 case Attack.WILDCARD:
