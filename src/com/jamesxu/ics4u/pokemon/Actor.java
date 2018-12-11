@@ -8,26 +8,29 @@ public abstract class Actor {
     public static final String ATTACK = "attack", PASS = "pass", RETREAT = "retreat";
     public final String name;
 
-    final ArrayList<Pokemon> roster = new ArrayList<>();
-    Pokemon active;
+    final ArrayList<Pokemon> roster = new ArrayList<>(); //Roster of available Pokemon
+    Pokemon active; //Currently battling Pokemon
 
     Actor(String name) {
         this.name = name;
     }
 
     public int getRosterSize() {
+        //Returns number of Pokemon in the roster
         return roster.size();
     }
 
     public void deathRitual() {
+        //Handles Pokemon death
         roster.remove(active);
         PokemonArena.roster.remove(active);
-        if (roster.size() > 0) {
+        if (roster.size() > 0) { //Prevent errors from choosing non-existent Pokemon
             chooseActive();
         }
     }
 
     public void recoverAllMax() {
+        //Take all Pokemon to max energy
         for (int i = 0; i < 5; i++) {
             recoverAll();
         }
@@ -44,17 +47,14 @@ public abstract class Actor {
     }
 
     private void unStunActive() {
+        //Un-stun active Pokemon
         active.unStun();
         System.out.println(String.format("%s (%s) is no longer stunned!", active.name, name));
     }
 
     boolean canAttack() {
-        for (Pokemon.Attack attack : active.availableAttacks) {
-            if (attack.energyCost <= active.getEnergy()) {
-                return true;
-            }
-        }
-        return false;
+        //Check if any attacks are affordable
+        return active.validAttacks().size() > 0;
     }
 
     @Override

@@ -57,6 +57,7 @@ public class Pokemon {
 
     @Override
     public boolean equals(Object o) {
+        //Auto-generated function
         if (this == o) return true;
         if (!(o instanceof Pokemon)) return false;
 
@@ -70,6 +71,7 @@ public class Pokemon {
 
     @Override
     public int hashCode() {
+        //Generate unique hash values based on immutable and unique fields for each Pokemon
         int result = name.hashCode();
         result = 31 * result + hpMax;
         result = 31 * result + resistance.hashCode();
