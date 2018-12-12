@@ -20,6 +20,10 @@ public abstract class Actor {
         return roster.size();
     }
 
+    public Pokemon getActiveCopy() {
+        return new Pokemon(active);
+    }
+
     public void deathRitual() {
         //Handles Pokemon death
         roster.remove(active);

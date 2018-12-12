@@ -33,6 +33,10 @@ public class Pokemon {
         }
     }
 
+    public String getType() {
+        return type;
+    }
+
     public Pokemon(Pokemon p) {
         //Clone constructor to avoid changing original
         name = p.name;
@@ -200,6 +204,7 @@ public class Pokemon {
                 message.append(String.format("%s has KILLED %s!\n", name, p.name)).append("-".repeat(29)).append("\n");
                 return new Utilities.Response(Attack.KILLED, message.toString());
             }
+            message.append(String.format("%s is now at %d health\n", p.name, p.hp));
             message.append("-".repeat(29)).append("\n");
         } else {
             return new Utilities.Response(Attack.NOT_ENOUGH_ENERGY, message.toString());

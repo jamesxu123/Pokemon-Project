@@ -40,10 +40,14 @@ public class Utilities {
     public static void displayPokemon(Pokemon pokemon) {
         //Displays Pokemon data in a nice format
         String output = "";
-        output += String.format("--------%10s--------\n", pokemon.name);
+        output += String.format("--------%10s---------\n", pokemon.name);
         output += String.format("Health: %19d\n", pokemon.getHp());
         output += String.format("Status: %19s\n", pokemon.getStatus());
         output += String.format("Energy: %19d\n", pokemon.getEnergy());
+        output += String.format("Type: %21s\n", pokemon
+                .getType()
+                .equals(" ") ? "None" : pokemon
+                .getResistance());
         output += String.format("Resistance: %15s\n", pokemon
                 .getResistance()
                 .equals(" ") ? "None" : pokemon

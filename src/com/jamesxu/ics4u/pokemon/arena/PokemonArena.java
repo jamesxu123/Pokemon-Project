@@ -14,6 +14,7 @@ public class PokemonArena {
     public static final ArrayList<Pokemon> roster = new ArrayList<>();
 
     private static void loadPokemon() throws IOException {
+        //Load Pokemon from file
         BufferedReader file = new BufferedReader(new FileReader("pokemon.txt"));
         file.readLine(); //Since ArrayList is used, value is not needed
         while (file.ready()) {
@@ -34,9 +35,13 @@ public class PokemonArena {
     }
 
     private static void turnLoop(Player player, Bot bot) throws IOException {
+        //Game loop function
         boolean running = true;
         player.chooseActive();
         while (running) {
+            System.out.println("-----------Enemy-----------");
+            Utilities.displayPokemon(bot.getActiveCopy());
+            System.out.println("-".repeat("-----------Enemy-----------".length()));
             Utilities.Response playerDecision = player.turnDecision(); //Turn always begins with player choosing move
             switch (playerDecision.status) {
                 case Player.ATTACK:
