@@ -93,7 +93,7 @@ public class Pokemon {
         return result;
     }
 
-    public int getHp() {
+    int getHp() {
         return hp;
     }
 
@@ -111,7 +111,7 @@ public class Pokemon {
                 '}';
     }
 
-    public ArrayList<Attack> validAttacks() {
+    ArrayList<Attack> validAttacks() {
         ArrayList<Attack> attacks = new ArrayList<>(); //Build a new list of attacks the Pokemon can afford
         for (Pokemon.Attack attack : availableAttacks) {
             if (attack.energyCost <= this.energy) {
@@ -121,11 +121,11 @@ public class Pokemon {
         return attacks;
     }
 
-    public void unStun() {
+    void unStun() {
         this.status = DEFAULT;
     }
 
-    public void heal(int amount) {
+    void heal(int amount) {
         if (this.hp + amount <= this.hpMax) { //Don't allow health to go over max
             this.hp += amount;
         } else {
@@ -133,7 +133,7 @@ public class Pokemon {
         }
     }
 
-    public void heal() {
+    void heal() {
         heal(20); //Method overload heal for per-battle recovery
     }
 
@@ -141,7 +141,7 @@ public class Pokemon {
         return status;
     }
 
-    public void recharge() {
+    void recharge() {
         if (this.energy + 10 > 50) { //Don't allow energy to go over max
             this.energy = 50;
         } else {
@@ -153,7 +153,7 @@ public class Pokemon {
         return energy;
     }
 
-    public Utilities.Response attack(Pokemon p, Attack a) {
+    Utilities.Response attack(Pokemon p, Attack a) {
         StringBuilder message = new StringBuilder(String.format("-----%10s's Attack-----\n", name));
         //Final output that is displayed to the user
 
