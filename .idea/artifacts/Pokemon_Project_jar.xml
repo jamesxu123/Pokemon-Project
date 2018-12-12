@@ -7,6 +7,7 @@
       <element id="directory" name="uiText">
         <element id="dir-copy" path="$PROJECT_DIR$/uiText" />
       </element>
+      <element id="file-copy" path="$PROJECT_DIR$/pokemon.txt" />
     </root>
   </artifact>
 </component>
