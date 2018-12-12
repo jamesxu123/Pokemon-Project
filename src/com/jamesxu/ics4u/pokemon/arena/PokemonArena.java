@@ -1,3 +1,13 @@
+/*
+James Xu
+ICS4U Pokemon Project
+
+PokemonArena class
+    - Serves as entry point to the program
+    - Handles game looping and turn interaction
+    - Located in a different package to safe-guard access to fields
+*/
+
 package com.jamesxu.ics4u.pokemon.arena;
 
 import com.jamesxu.ics4u.pokemon.Bot;

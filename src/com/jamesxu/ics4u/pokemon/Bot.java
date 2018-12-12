@@ -1,3 +1,12 @@
+/*
+James Xu
+ICS4U Pokemon Project
+
+Bot class
+    - Implements the Actor class
+    - Decision-making based on random chance
+*/
+
 package com.jamesxu.ics4u.pokemon;
 
 import com.jamesxu.ics4u.pokemon.arena.PokemonArena;

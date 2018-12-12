@@ -1,3 +1,13 @@
+/*
+James Xu
+ICS4U Pokemon Project
+
+Pokemon class
+    - Contains fields and methods for a single Pokemon
+    - Attack class
+        - Data structure to store a Pokemon's attacks and provide constants for use
+*/
+
 package com.jamesxu.ics4u.pokemon;
 
 import java.util.ArrayList;
@@ -33,10 +43,6 @@ public class Pokemon {
         }
     }
 
-    public String getType() {
-        return type;
-    }
-
     public Pokemon(Pokemon p) {
         //Clone constructor to avoid changing original
         name = p.name;
@@ -49,6 +55,10 @@ public class Pokemon {
         energy = p.energy;
         status = p.status;
         DISABLED = p.DISABLED;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public String getResistance() {

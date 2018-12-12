@@ -1,3 +1,13 @@
+/*
+James Xu
+ICS4U Pokemon Project
+
+Utilities class
+    - Contains helpful functions that are used throughout the program
+    - Response class
+        - Used to return a standardized String message and a custom String message for display
+*/
+
 package com.jamesxu.ics4u.pokemon;
 
 import java.io.BufferedReader;
@@ -8,7 +18,7 @@ import java.util.Scanner;
 public class Utilities {
     public static boolean coinFlip() {
         //Simulate a 50/50 chance
-        return randInt(0, 10) % 2 == 0;
+        return randInt(0, 2) == 1;
     }
 
     public static int randInt(int low, int high) {

@@ -1,3 +1,13 @@
+/*
+James Xu
+ICS4U Pokemon Project
+
+Player class
+    - Implements the Actor class
+    - Decision-making based on user input
+    - Represents the end-user as a player
+*/
+
 package com.jamesxu.ics4u.pokemon;
 
 import com.jamesxu.ics4u.pokemon.arena.PokemonArena;

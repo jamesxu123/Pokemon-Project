@@ -1,3 +1,13 @@
+/*
+James Xu
+ICS4U Pokemon Project
+
+Actor class
+    - Abstract class that contains standardized fields and methods
+    - Methods that would differ in Bot and Player are left as abstract
+    - Used to represent a generic user
+*/
+
 package com.jamesxu.ics4u.pokemon;
 
 import com.jamesxu.ics4u.pokemon.arena.PokemonArena;
