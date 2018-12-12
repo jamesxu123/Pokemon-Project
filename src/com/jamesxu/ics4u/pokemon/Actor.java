@@ -31,6 +31,7 @@ public abstract class Actor {
     }
 
     public Pokemon getActiveCopy() {
+        //Returns a copy of the active Pokemon for safe access in different classes
         return new Pokemon(active);
     }
 
@@ -76,25 +77,29 @@ public abstract class Actor {
         return name.hashCode();
     }
 
-    public abstract Utilities.Response turnDecision();
+    public abstract Utilities.Response turnDecision(); //Gets decision as ATTACK, PASS, or RETREAT
 
-    protected abstract Pokemon.Attack chooseAttack();
+    protected abstract Pokemon.Attack chooseAttack(); //Chooses an attack for attacking
 
     public void recoverAll() {
+        //Recharge energy of all Pokemon
         for (Pokemon p : this.roster) p.recharge();
     }
 
     public void healAll() {
+        //Heal all Pokemon by per-turn amount
         for (Pokemon p : this.roster) p.heal();
     }
 
     public Utilities.Response attack(Actor actor) {
+        //Call the active Pokemon's attack method and choose an attack
         return active.attack(actor.active, chooseAttack());
     }
 
     public void pass() {
+        //Pass the turn and check for stun
         if (this.active.getStatus().equals(Pokemon.STUNNED)) {
-            this.unStunActive();
+            this.unStunActive(); //If pass is due to stun, un-stun at while passing the turn
         }
         System.out.println(String.format("%s has passed their turn!", name));
     }

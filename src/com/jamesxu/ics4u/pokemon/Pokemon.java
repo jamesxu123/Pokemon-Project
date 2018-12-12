@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class Pokemon {
     public static final String DEFAULT = "NORMAL", STUNNED = "STUNNED", DEAD = "DEAD";
-    public final ArrayList<Attack> availableAttacks = new ArrayList<>();
+    private final ArrayList<Attack> availableAttacks = new ArrayList<>();
     public final String name;
     private final int hpMax;
     private final String type;
