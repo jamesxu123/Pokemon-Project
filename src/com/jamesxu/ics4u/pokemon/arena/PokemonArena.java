@@ -68,6 +68,7 @@ public class PokemonArena {
                             player.healAll(); //End-of-battle heals for player Pokemon
                             bot.deathRitual(); //Delete dead Pokemon and force bot to pick a new one
                             player.recoverAllMax(); //Reset player Pokemon energy status
+                            player.enableActive(); //Enable Player Pokemon when enemy Pokemon is killed
                             bot.recoverAllMax(); //Reset bot Pokemon energy status
                             break;
                     }
@@ -91,6 +92,7 @@ public class PokemonArena {
                                 break;
                             case Pokemon.Attack.KILLED: //Signifies end of battle
                                 player.deathRitual(); //Delete and choose a new active
+                                bot.enableActive(); //Enable Bot Pokemon at end of battle when Player is killed
                                 if (player.getRosterSize() == 0) { //If player roster is empty, they have lost
                                     Utilities.displayFile("uiText/loss.txt");
                                     return;

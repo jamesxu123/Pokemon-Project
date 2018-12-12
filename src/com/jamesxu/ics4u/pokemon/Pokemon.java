@@ -57,6 +57,10 @@ public class Pokemon {
         DISABLED = p.DISABLED;
     }
 
+    void enable() {
+        DISABLED = false;
+    }
+
     public String getType() {
         return type;
     }

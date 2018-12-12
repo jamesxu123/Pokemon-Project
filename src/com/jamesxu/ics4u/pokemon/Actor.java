@@ -35,6 +35,10 @@ public abstract class Actor {
         return new Pokemon(active);
     }
 
+    public void enableActive() {
+        active.enable();
+    }
+
     public void deathRitual() {
         //Handles Pokemon death
         roster.remove(active);
