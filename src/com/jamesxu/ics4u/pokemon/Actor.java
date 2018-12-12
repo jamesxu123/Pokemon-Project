@@ -35,8 +35,11 @@ public abstract class Actor {
         return new Pokemon(active);
     }
 
-    public void enableActive() {
-        active.enable();
+    public void enableAll() {
+        active.enable(); //Bot doesn't have a roster
+        for (Pokemon p : roster) { //Enable retreated Pokemon too
+            p.enable();
+        }
     }
 
     public void deathRitual() {
