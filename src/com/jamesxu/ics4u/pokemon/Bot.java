@@ -12,6 +12,7 @@ public class Bot extends Actor {
     @Override
     public void deathRitual() {
         //Override function to check size of PokemonArena's roster
+        PokemonArena.roster.remove(active);
         if (PokemonArena.roster.size() > 0) chooseActive();
     }
 

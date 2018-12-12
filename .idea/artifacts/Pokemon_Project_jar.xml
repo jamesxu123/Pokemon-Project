@@ -3,7 +3,10 @@
     <output-path>$PROJECT_DIR$/out/artifacts/Pokemon_Project_jar</output-path>
     <root id="archive" name="Pokemon Project.jar">
       <element id="module-output" name="Pokemon Project" />
-      <element id="dir-copy" path="$PROJECT_DIR$/uiText" />
+      <element id="module-source" name="Pokemon Project" />
+      <element id="directory" name="uiText">
+        <element id="dir-copy" path="$PROJECT_DIR$/uiText" />
+      </element>
     </root>
   </artifact>
 </component>

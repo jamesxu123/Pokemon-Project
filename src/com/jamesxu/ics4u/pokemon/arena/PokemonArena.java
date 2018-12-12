@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class PokemonArena {
     public static final ArrayList<Pokemon> roster = new ArrayList<>();
@@ -16,17 +17,19 @@ public class PokemonArena {
     private static void loadPokemon() throws IOException {
         //Load Pokemon from file
         BufferedReader file = new BufferedReader(new FileReader("pokemon.txt"));
-        file.readLine(); //Since ArrayList is used, value is not needed
-        while (file.ready()) {
+        int num = Integer.parseInt(file.readLine());//Since ArrayList is used, value is not needed
+        for (int i = 0; i < num; i++) {
             String line = file.readLine();
             roster.add(new Pokemon(line));
         }
     }
 
     public static void main(String[] args) throws IOException {
+        Scanner input = new Scanner(System.in);
         loadPokemon();
+        System.out.println("Enter your username:");
+        Player player = new Player(input.nextLine()); //Player object for the user
         Utilities.displayFile("uiText/opening.txt");
-        Player player = new Player("Player"); //Player object for the user
         ArrayList<Pokemon> chosen = player.chooseRoster();
         roster.removeAll(chosen); //Remove all the Pokemon the player has chosen
         Bot bot = new Bot("Bot", roster.get(Utilities.randInt(0, roster.size()))); //AI bot object

@@ -40,7 +40,7 @@ public class Pokemon {
     public Pokemon(Pokemon p) {
         //Clone constructor to avoid changing original
         name = p.name;
-        hp = p.hpMax;
+        hp = p.hp;
         hpMax = p.hpMax;
         type = p.type;
         resistance = p.resistance;
