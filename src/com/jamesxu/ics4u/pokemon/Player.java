@@ -97,10 +97,14 @@ public class Player extends Actor {
         }
         System.out.print("Enter a number: ");
         int activeIndex = Utilities.getInputFromRange(1, roster.size() + 1) - 1;
-        while (roster.get(activeIndex).equals(active)) {
-            //Don't let user pick the same Pokemon again
-            System.out.println("You picked your current Pokemon!");
-            activeIndex = Utilities.getInputFromRange(1, roster.size() + 1) - 1;
+        if (roster.size() > 1) { //Let user pick current one if they only have one Pokemon left
+            while (roster.get(activeIndex).equals(active)) {
+                //Don't let user pick the same Pokemon again
+                System.out.println("You picked your current Pokemon!");
+                activeIndex = Utilities.getInputFromRange(1, roster.size() + 1) - 1;
+            }
+        } else {
+            System.out.println("You only have one Pokemon left, so you can only pick that one!");
         }
         active = roster.get(activeIndex);
         System.out.println(String.format("%s, I CHOOSE YOU!", active.name));
